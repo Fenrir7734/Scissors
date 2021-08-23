@@ -17,17 +17,29 @@
          <content>
             <VBox fx:id="generalSettingsPane" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <CheckBox fx:id="automaticSaveCheckbox" mnemonicParsing="false" text="Automatic save to default directory" />
-                  <CheckBox fx:id="automaticCopyCheckbox" mnemonicParsing="false" text="Automatic copy image to clipboard" />
-                  <Label text="Save Path" />
-                  <HBox fx:id="savePathPane" prefHeight="50.0" prefWidth="200.0">
+                  <VBox fx:id="checkBoxContainer" prefHeight="84.0" prefWidth="300.0">
                      <children>
-                        <TextField fx:id="pathTextField" />
-                        <Button fx:id="changePathButton" mnemonicParsing="false" text="Change..." />
+                        <CheckBox fx:id="automaticSaveCheckbox" mnemonicParsing="false" text="Automatic save to default directory" />
+                        <CheckBox fx:id="automaticCopyCheckbox" mnemonicParsing="false" text="Automatic copy image to clipboard" />
                      </children>
-                  </HBox>
-                  <Label text="Opacity of area otside selection" />
-                  <Slider fx:id="opacitySlider" />
+                  </VBox>
+                  <VBox fx:id="savePathContainer" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Save Path" />
+                        <HBox fx:id="savePathPane" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="pathTextField" />
+                              <Button fx:id="changePathButton" mnemonicParsing="false" text="Change..." />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="opacityContainer" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Opacity of area otside selection" />
+                        <Slider fx:id="opacitySlider" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </content>
