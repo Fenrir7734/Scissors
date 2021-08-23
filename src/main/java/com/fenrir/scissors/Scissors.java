@@ -1,5 +1,6 @@
 package com.fenrir.scissors;
 
+import com.fenrir.scissors.model.Properties;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,6 +43,7 @@ public class Scissors extends Application {
     }
 
     public static void main(String[] args) {
+        Properties.getInstance();
         launch(args);
     }
 }

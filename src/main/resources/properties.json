@@ -1,0 +1,19 @@
+{
+  "save-to-default": true,
+  "save-to-clipboard": true,
+
+  "default-path": "./",
+
+  "opacity": 70,
+
+  "favorite": [
+    {
+      "name": "Name1",
+      "path": "./"
+    },
+    {
+      "name": "Name2",
+      "path": "./"
+    }
+  ]
+}
