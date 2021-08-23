@@ -1,0 +1,89 @@
+* {
+    -fx-white-color: #eceff4;
+    -fx-black-color: #2e3440;
+    -fx-green-color: #05be70;
+    -fx-dark-green-color: #049a5b;
+}
+
+.root {
+    -fx-background-color: -fx-black-color;
+    -fx-text-fill: -fx-white-color;
+    -fx-pref-width: 600;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-width: -fx-pref-width;
+    -fx-padding: 0;
+}
+
+.button,
+.menu-button {
+    -fx-pref-height: 30;
+    -fx-max-height: -fx-pref-height;
+    -fx-min-height: -fx-pref-height;
+    -fx-pref-width: 90px;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-width: -fx-pref-width;
+}
+
+.context-menu {
+    -fx-pref-width: inherit;
+}
+
+.button,
+.menu-button,
+.menu-item,
+.context-menu,
+#toolbox .toggle-button {
+    -fx-background-color: -fx-green-color;
+    -fx-text-fill: -fx-white-color;
+}
+
+.label {
+    -fx-text-fill: -fx-white-color;
+}
+
+.button-bar,
+#toolbox {
+    -fx-padding: 10px 20px;
+    -fx-pref-height: 50;
+}
+
+#toolbox,
+#screenNameContainer {
+    -fx-alignment: center;
+}
+
+#screenNameField {
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50;
+}
+
+#toolbox {
+    -fx-spacing: 10;
+}
+
+.button:hover,
+.menu-button:hover,
+.menu-item:hover,
+.menu-item:hover,
+#toolbox .toggle-button:hover,
+#toolbox .toggle-button:selected {
+    -fx-background-color: -fx-dark-green-color;
+    -fx-cursor: hand;
+}
+
+#copyButton,
+#settingsButton,
+#toolbox .toggle-button {
+    -fx-pref-width: 30;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-width: -fx-pref-width;
+}
+
+#settingsButton {
+    -fx-background-color: #434c5e;
+    -fx-text-fill: #d8dee9;
+}
+
+#settingsButton:hover {
+    -fx-background-color: #3b4252;
+}
