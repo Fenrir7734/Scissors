@@ -8,6 +8,9 @@
 .root {
     -fx-background-color: -fx-black-color;
     -fx-text-fill: -fx-white-color;
+}
+
+#mainWindowPane {
     -fx-pref-width: 600;
     -fx-max-width: -fx-pref-width;
     -fx-min-width: -fx-pref-width;
@@ -34,6 +37,10 @@
 .context-menu,
 #toolbox .toggle-button {
     -fx-background-color: -fx-green-color;
+    -fx-text-fill: -fx-white-color;
+}
+
+.check-box {
     -fx-text-fill: -fx-white-color;
 }
 
@@ -86,4 +93,52 @@
 
 #settingsButton:hover {
     -fx-background-color: #3b4252;
+}
+
+#settingsPane {
+    -fx-pref-height: 400;
+    -fx-max-height: -fx-pref-height;
+    -fx-min-height: -fx-pref-height;
+    -fx-pref-width: 300;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-width: -fx-pref-width;
+}
+
+#generalSettingsPane {
+    -fx-spacing: 20;
+}
+
+#checkBoxContainer,
+#savePathContainer,
+#opacityContainer {
+    -fx-spacing: 10;
+    -fx-padding: 0 10;
+}
+
+#checkBoxContainer {
+    -fx-padding: 20 10 20 10;
+}
+
+#savePathContainer,
+#opacityContainer {
+    -fx-pref-height: 80;
+    -fx-max-height: -fx-pref-height;
+    -fx-min-height: -fx-pref-height;
+}
+
+#savePathPane {
+    -fx-spacing: 10;
+}
+
+#savePathPane .text-field,
+#savePathPane .button {
+    -fx-pref-height: 30;
+    -fx-max-height: -fx-pref-height;
+    -fx-min-height: -fx-pref-height;
+}
+
+#addToFavoriteButton {
+    -fx-pref-width: 300;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-width: -fx-pref-width;
 }

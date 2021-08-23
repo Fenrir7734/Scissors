@@ -18,7 +18,7 @@
 <?import org.controlsfx.glyphfont.Glyph?>
 -->
 
-<AnchorPane fx:id="mainWindowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.MainWindowController">
+<AnchorPane fx:id="mainWindowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="600.0" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.MainWindowController">
    <children>
       <VBox fx:id="mainWindowVBox" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="600.0">
          <children>
