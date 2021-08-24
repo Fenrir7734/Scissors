@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane fx:id="settingsPane" stylesheets="@css/application.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:id="settingsPane" stylesheets="@css/application.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.SettingsWindowController">
   <tabs>
     <Tab text="General">
          <content>

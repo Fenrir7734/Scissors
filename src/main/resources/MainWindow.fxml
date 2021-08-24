@@ -50,13 +50,14 @@
                      <ToggleGroup fx:id="toolboxGroup" />
                   </toggleGroup>
                </ToggleButton>
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="pencilToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="markerToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                <ToggleButton fx:id="blurToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                <ToggleButton fx:id="arrowToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="rectangleToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="lineToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="ellipseToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
             </HBox>
             <Canvas fx:id="screenDisplay" />
          </children>
