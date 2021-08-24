@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Properties {
@@ -21,7 +21,7 @@ public class Properties {
     private boolean saveToClipboard;
     private Path defaultPath;
     private int opacity;
-    private List<Favorite> favoriteList;
+    private final List<Favorite> favoriteList;
 
     private final record Favorite(String name, Path path) {
 
@@ -43,6 +43,7 @@ public class Properties {
         opacity = propertiesFileContent.getInt("opacity");
 
         JSONArray array = propertiesFileContent.getJSONArray("favorite");
+        favoriteList = new ArrayList<>();
 
         for (int i = 0; i < array.length(); i++) {
             JSONObject favorite = array.getJSONObject(i);
@@ -51,6 +52,7 @@ public class Properties {
                     Path.of(favorite.getString("path"))
             ));
         }
+        System.out.println(favoriteList);
     }
 
     public static Properties getInstance() {
@@ -74,6 +76,10 @@ public class Properties {
 
     public int getOpacity() {
         return opacity;
+    }
+
+    public List<Favorite> getFavoriteList() {
+        return favoriteList;
     }
 
     public void setSaveToDefault(boolean saveToDefault) {
@@ -123,7 +129,7 @@ public class Properties {
 
     private static class PropertiesUtils {
         private final static Logger logger = LoggerFactory.getLogger(Properties.class);
-        private final static String PATH = "properties.json";
+        private final static String PATH = "src/main/resources/properties.json";
 
         public static JSONObject readProperties() {
             try {

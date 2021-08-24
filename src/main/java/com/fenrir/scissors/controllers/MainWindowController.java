@@ -10,33 +10,28 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class MainWindowController {
-    @FXML public HBox screenNameContainer;
+
     @FXML private AnchorPane mainWindowPane;
     @FXML private VBox mainWindowVBox;
-
     @FXML private ButtonBar mainButtonBar;
-
     @FXML private Button captureButton;
     @FXML private Button settingsButton;
     @FXML private Button copyButton;
     @FXML private Button saveButton;
     @FXML private MenuButton saveAsMenuButton;
-
+    @FXML private HBox screenNameContainer;
     @FXML private TextField screenNameField;
-
     @FXML private HBox toolbox;
-    @FXML private Button penTool;
-    @FXML private Button markerTool;
-    @FXML private Button blurTool;
-    @FXML private SplitMenuButton shapesTool;
-    @FXML private MenuItem lineTool;
-    @FXML private MenuItem arrowTool;
-    @FXML private MenuItem rectangleTool;
-    @FXML private MenuItem ellipseTool;
-    @FXML private Button rubberTool;
-    @FXML private SplitMenuButton colorTool;
-
+    @FXML private ToggleGroup toolboxGroup;
     @FXML private Canvas screenDisplay;
+    @FXML private ToggleButton pencilToolButton;
+    @FXML private ToggleButton markerToolButton;
+    @FXML private ToggleButton blurToolButton;
+    @FXML private ToggleButton arrowToolButton;
+    @FXML private ToggleButton rectangleToolButton;
+    @FXML private ToggleButton lineToolButton;
+    @FXML private ToggleButton ellipseToolButton;
+    @FXML private ToggleButton eraserToolButton;
 
     @FXML
     public void initialize() {

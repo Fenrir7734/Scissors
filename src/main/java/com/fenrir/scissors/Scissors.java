@@ -43,7 +43,6 @@ public class Scissors extends Application {
     }
 
     public static void main(String[] args) {
-        Properties.getInstance();
         launch(args);
     }
 }
