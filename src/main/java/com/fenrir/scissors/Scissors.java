@@ -1,6 +1,6 @@
 package com.fenrir.scissors;
 
-import com.fenrir.scissors.model.Properties;
+import com.fenrir.scissors.model.ScreenDetector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

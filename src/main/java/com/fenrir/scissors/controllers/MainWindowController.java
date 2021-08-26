@@ -44,7 +44,7 @@ public class MainWindowController {
     }
 
     @FXML
-    public void onClick(ActionEvent event) {
+    public void captureScreen(ActionEvent event) {
         screenNameField.setVisible(true);
         screenNameField.setManaged(true);
         toolbox.setVisible(true);
@@ -52,6 +52,7 @@ public class MainWindowController {
         screenDisplay.setVisible(true);
         screenDisplay.setManaged(true);
         Scissors.getInstance().setSize(Scissors.MIN_HEIGHT + 75);
+        new CaptureWindowController();
     }
 
 }
