@@ -21,6 +21,7 @@ public class Properties {
     private boolean saveToClipboard;
     private Path defaultPath;
     private int opacity;
+    private int borderWidth;
     private final List<Favorite> favoriteList;
 
     private final record Favorite(String name, Path path) {
@@ -41,6 +42,7 @@ public class Properties {
         saveToClipboard = propertiesFileContent.getBoolean("save-to-clipboard");
         defaultPath = Path.of(propertiesFileContent.getString("default-path"));
         opacity = propertiesFileContent.getInt("opacity");
+        borderWidth = propertiesFileContent.getInt("border-width");
 
         JSONArray array = propertiesFileContent.getJSONArray("favorite");
         favoriteList = new ArrayList<>();
@@ -78,6 +80,10 @@ public class Properties {
         return opacity;
     }
 
+    public int getBorderWidth() {
+        return borderWidth;
+    }
+
     public List<Favorite> getFavoriteList() {
         return favoriteList;
     }
@@ -110,6 +116,13 @@ public class Properties {
         this.opacity = opacity;
     }
 
+    public void setBorderWidth(int borderWidth) {
+        propertiesFileContent.put("border-width", borderWidth);
+        PropertiesUtils.writeProperties(propertiesFileContent);
+
+        this.borderWidth = borderWidth;
+    }
+
     public void addToFavorite(String name, String path) {
         propertiesFileContent.put(
                 "favorite", new JSONObject().put("name", name).put("path", path)
@@ -124,6 +137,7 @@ public class Properties {
                 .put("save-to-clipboard", true)
                 .put("default-path", "./")
                 .put("opacity", 70)
+                .put("border-width", 2)
                 .put("favorite", new JSONArray());
     }
 
