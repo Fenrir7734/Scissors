@@ -24,7 +24,7 @@
          <children>
             <ButtonBar fx:id="mainButtonBar" buttonMinWidth="24.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                  <Button fx:id="captureButton" maxWidth="90.0" mnemonicParsing="false" onAction="#onClick" prefHeight="24.0" prefWidth="90.0" text="Capture " ButtonBar.buttonData="LEFT" />
+                  <Button fx:id="captureButton" maxWidth="90.0" mnemonicParsing="false" onAction="#captureScreen" prefHeight="24.0" prefWidth="90.0" text="Capture " ButtonBar.buttonData="LEFT" />
                   <Button fx:id="settingsButton" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" />
                   <Button fx:id="copyButton" cache="true" mnemonicParsing="false" />
                   <Button fx:id="saveButton" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
