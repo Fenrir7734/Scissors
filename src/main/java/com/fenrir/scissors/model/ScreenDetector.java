@@ -44,20 +44,6 @@ public class ScreenDetector {
         return currentScreen;
     }
 
-    public Background getCurrentWindowScreenshot() {
-        WritableImage image = ScreenShotUtils.takeScreenshot(currentScreen);
-
-        return new Background(
-                new BackgroundImage(
-                        image,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundPosition.CENTER,
-                        BackgroundSize.DEFAULT
-                )
-        );
-    }
-
     public Point getCurrentScreenLocation() {
         Rectangle2D rectangle2D = currentScreen.getBounds();
         return new Point((int) rectangle2D.getMinX(), (int) rectangle2D.getMinY());

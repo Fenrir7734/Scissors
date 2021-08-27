@@ -1,9 +1,10 @@
 package com.fenrir.scissors.model;
 
+import com.fenrir.scissors.model.area.Area;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.*;
 import javafx.scene.robot.Robot;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 
 public class ScreenShotUtils {
@@ -27,5 +28,19 @@ public class ScreenShotUtils {
 
     public static WritableImage takeScreenshot(Area area) {
         return takeScreenshot(area.getStartX(), area.getStartY(), area.getWidth(), area.getHeight());
+    }
+
+    public static Background getCurrentWindowScreenshotAsBackground(Screen screen) {
+        WritableImage image = ScreenShotUtils.takeScreenshot(screen);
+
+        return new Background(
+                new BackgroundImage(
+                        image,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        BackgroundSize.DEFAULT
+                )
+        );
     }
 }
