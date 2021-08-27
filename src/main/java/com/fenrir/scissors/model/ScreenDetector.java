@@ -30,9 +30,9 @@ public class ScreenDetector {
         Point p = MouseInfo.getPointerInfo().getLocation();
         for (Screen screen: screens) {
             if(screen.getBounds().getMinX() <= p.x
-                    && screen.getBounds().getMaxX() >= p.x
+                    && screen.getBounds().getMaxX() > p.x
                     && screen.getBounds().getMinY() <= p.y
-                    && screen.getBounds().getMaxY() >= p.y
+                    && screen.getBounds().getMaxY() > p.y
             ) {
                 return screen;
             }

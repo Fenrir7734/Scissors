@@ -24,4 +24,8 @@ public class ScreenShotUtils {
     public static WritableImage takeScreenshot(Screen screen) {
         return takeScreenshot(screen.getBounds());
     }
+
+    public static WritableImage takeScreenshot(Area area) {
+        return takeScreenshot(area.getStartX(), area.getStartY(), area.getWidth(), area.getHeight());
+    }
 }
