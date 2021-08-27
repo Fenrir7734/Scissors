@@ -1,15 +1,13 @@
 package com.fenrir.scissors.controllers;
 
-import com.fenrir.scissors.model.Area;
+import com.fenrir.scissors.model.Properties;
+import com.fenrir.scissors.model.area.Area;
 import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.ScreenShotUtils;
+import com.fenrir.scissors.model.area.AreaSelector;
 import javafx.animation.AnimationTimer;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
@@ -17,18 +15,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.shape.Rectangle;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
 
 
 public class CaptureWindowController {
-    private final int BORDER_WIDTH = 3;
+    private final int BORDER_WIDTH;
 
     private final ScreenDetector screenDetector = new ScreenDetector();
-    private Area selectedArea;
+    private AreaSelector areaSelector;
 
     private final Stage captureWindow;
     private final StackPane backgroundHolder;
@@ -37,6 +32,8 @@ public class CaptureWindowController {
     private AnimationTimer screenDetection;
 
     public CaptureWindowController() {
+        BORDER_WIDTH = Properties.getInstance().getBorderWidth();
+
         captureWindow = new Stage();
         StackPane root = new StackPane();
         backgroundHolder = new StackPane();
@@ -60,7 +57,7 @@ public class CaptureWindowController {
         captureWindow.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
         changeFocusedScreen();
-        redrawOverlay();
+        drawOverlay();
         initScreenDetection();
         selectAreaEvent();
 
@@ -89,30 +86,20 @@ public class CaptureWindowController {
     private void selectAreaEvent() {
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
             screenDetection.stop();
-            selectedArea = new Area((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            areaSelector = new AreaSelector(screenDetector.getCurrentScreen().getBounds());
+            areaSelector.setStartPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
         });
 
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> {
-            selectedArea.updateEndPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            redrawOverlay();
+            areaSelector.setEndPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            drawOverlay();
             drawSelectedArea();
         });
 
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
-            selectedArea.updateEndPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            redrawOverlay();
+            areaSelector.setEndPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            drawOverlay();
             drawSelectedArea();
-            /*
-            Group group = new Group();
-            selectedAreaBorder = new Rectangle(selectedArea.getStartX(), selectedArea.getStartY(), selectedArea.getWidth(), selectedArea.getHeight());
-            selectedAreaBorder.setFill(Color.TRANSPARENT);
-            selectedAreaBorder.setStroke(Color.BLUE);
-            backgroundHolder.getChildren().add(selectedAreaBorder);
-
-             */
-
-            //backgroundHolder.getChildren().add(selectedAreaBorder);
-            //captureWindow.close();
         });
     }
 
@@ -121,7 +108,9 @@ public class CaptureWindowController {
         int screenWidth = screenDetector.getCurrentScreenWidth();
         int screenHeight = screenDetector.getCurrentScreenHeight();
 
-        backgroundHolder.setBackground(screenDetector.getCurrentWindowScreenshot());
+        backgroundHolder.setBackground(
+                ScreenShotUtils.getCurrentWindowScreenshotAsBackground(screenDetector.getCurrentScreen())
+        );
 
         captureAreaCanvas.setWidth(screenWidth);
         captureAreaCanvas.setHeight(screenHeight);
@@ -134,28 +123,40 @@ public class CaptureWindowController {
 
         captureWindow.setFullScreen(false);
         captureWindow.setFullScreen(true);
+
+        drawOverlay();
     }
 
-    private void redrawOverlay() {
+    private void drawOverlay() {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
-        graphicsContext.clearRect(
-                graphicsContext.getCanvas().getLayoutX(),
-                graphicsContext.getCanvas().getLayoutY(),
-                graphicsContext.getCanvas().getWidth(),
-                graphicsContext.getCanvas().getHeight()
-        );
-        graphicsContext.setFill(Color.rgb(0, 0, 0, 0.3));
+
+        graphicsContext.setFill(Color.rgb(5, 190, 112));
         graphicsContext.fillRect(
                 graphicsContext.getCanvas().getLayoutX(),
                 graphicsContext.getCanvas().getLayoutY(),
                 graphicsContext.getCanvas().getWidth(),
                 graphicsContext.getCanvas().getHeight()
         );
+
+        graphicsContext.clearRect(
+                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+        );
+
+        graphicsContext.setFill(Color.rgb(0, 0, 0, 0.5));
+        graphicsContext.fillRect(
+                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+        );
     }
 
     private void drawSelectedArea() {
         drawAreaBorder();
-
+        Area selectedArea = areaSelector.getArea();
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
         graphicsContext.clearRect(
                 selectedArea.getStartX(),
@@ -169,6 +170,7 @@ public class CaptureWindowController {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
         graphicsContext.setFill(Color.rgb(5, 190, 112));
 
+        Area selectedArea = areaSelector.getArea();
         Area borderArea = new Area();
 
         if(selectedArea.getStartX() < selectedArea.getEndX()) {
@@ -194,4 +196,5 @@ public class CaptureWindowController {
                 borderArea.getHeight()
         );
     }
+
 }

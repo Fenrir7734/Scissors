@@ -1,6 +1,4 @@
-package com.fenrir.scissors.model;
-
-import javafx.geometry.Rectangle2D;
+package com.fenrir.scissors.model.area;
 
 public class Area {
     private int startX;
@@ -59,8 +57,4 @@ public class Area {
         this.endY = y;
     }
 
-    public void updateEndPoint(int x, int y) {
-        this.endX = x;
-        this.endY = y;
-    }
 }
