@@ -6,8 +6,11 @@ import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.ScreenShotUtils;
 import com.fenrir.scissors.model.area.AreaSelector;
 import javafx.animation.AnimationTimer;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
 
 
 public class CaptureWindowController {
@@ -87,19 +92,30 @@ public class CaptureWindowController {
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
             screenDetection.stop();
             areaSelector = new AreaSelector(screenDetector.getCurrentScreen().getBounds());
-            areaSelector.setStartPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            areaSelector.setFirstPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
         });
 
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> {
-            areaSelector.setEndPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            areaSelector.setSecondPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
             drawOverlay();
             drawSelectedArea();
         });
 
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
-            areaSelector.setEndPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            drawOverlay();
-            drawSelectedArea();
+            areaSelector.setSecondPoint((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            Area selectedArea = areaSelector.getArea();
+
+            if(selectedArea.getWidth() > 0 && selectedArea.getWidth() > 0) {
+                WritableImage image = ScreenShotUtils.takeScreenshot(selectedArea);
+                try {
+                    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", new File("/home/fenrir/screenshot.png"));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                captureWindow.close();
+            } else {
+                drawOverlay();
+            }
         });
     }
 
@@ -157,41 +173,37 @@ public class CaptureWindowController {
     private void drawSelectedArea() {
         drawAreaBorder();
         Area selectedArea = areaSelector.getArea();
+
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
         graphicsContext.clearRect(
-                selectedArea.getStartX(),
-                selectedArea.getStartY(),
+                selectedArea.getRelativeStartX(),
+                selectedArea.getRelativeStartY(),
                 selectedArea.getWidth(),
                 selectedArea.getHeight()
         );
     }
 
     private void drawAreaBorder() {
+        Area selectedArea = areaSelector.getArea();
+
+        AreaSelector selector = new AreaSelector(screenDetector.getCurrentScreen().getBounds());
+        selector.setFirstPoint(
+                selectedArea.getRelativeStartX() - BORDER_WIDTH,
+                selectedArea.getRelativeStartY() - BORDER_WIDTH
+        );
+        selector.setSecondPoint(
+                selectedArea.getRelativeEndX() + BORDER_WIDTH,
+                selectedArea.getRelativeEndY() + BORDER_WIDTH
+        );
+
+        Area borderArea = selector.getArea();
+
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
         graphicsContext.setFill(Color.rgb(5, 190, 112));
 
-        Area selectedArea = areaSelector.getArea();
-        Area borderArea = new Area();
-
-        if(selectedArea.getStartX() < selectedArea.getEndX()) {
-            borderArea.setStartX(selectedArea.getStartX() - BORDER_WIDTH);
-            borderArea.setEndX(selectedArea.getEndX() + BORDER_WIDTH);
-        } else {
-            borderArea.setStartX(selectedArea.getStartX() + BORDER_WIDTH);
-            borderArea.setEndX(selectedArea.getEndX() - BORDER_WIDTH);
-        }
-
-        if(selectedArea.getStartY() < selectedArea.getEndY()) {
-            borderArea.setStartY(selectedArea.getStartY() - BORDER_WIDTH);
-            borderArea.setEndY(selectedArea.getEndY() + BORDER_WIDTH);
-        } else {
-            borderArea.setStartY(selectedArea.getStartY() + BORDER_WIDTH);
-            borderArea.setEndY(selectedArea.getEndY() - BORDER_WIDTH);
-        }
-
         graphicsContext.fillRect(
-                borderArea.getStartX(),
-                borderArea.getStartY(),
+                borderArea.getRelativeStartX(),
+                borderArea.getRelativeStartY(),
                 borderArea.getWidth(),
                 borderArea.getHeight()
         );

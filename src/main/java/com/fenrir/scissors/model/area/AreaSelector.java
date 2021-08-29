@@ -7,39 +7,46 @@ public class AreaSelector {
     private final int BORDER_WIDTH;
 
     private Area area;
-    private Rectangle2D areaBounds;
+    private int minX;
+    private int minY;
+    private int maxX;
+    private int maxY;
 
     public AreaSelector(Rectangle2D areaBounds) {
         this.BORDER_WIDTH = Properties.getInstance().getBorderWidth();
 
-        this.area = new Area();
-        this.areaBounds = areaBounds;
+        this.minX = (int) areaBounds.getMinX();
+        this.minY = (int) areaBounds.getMinY();
+        this.maxX = (int) areaBounds.getMaxX();
+        this.maxY = (int) areaBounds.getMaxY();
+
+        this.area = new Area(minX, minY);
     }
 
-    public void setStartPoint(int x, int y) {
-        area.setStartX(parseX(x));
-        area.setStartY(parseY(y));
+    public void setFirstPoint(int x, int y) {
+        area.setX1(parseX(x));
+        area.setY1(parseY(y));
     }
 
-    public void setEndPoint(int x, int y) {
-        area.setEndX(parseX(x));
-        area.setEndY(parseY(y));
+    public void setSecondPoint(int x, int y) {
+        area.setX2(parseX(x));
+        area.setY2(parseY(y));
     }
 
     private int parseX(int x) {
-        if(x < areaBounds.getMinX() + BORDER_WIDTH) {
-            x = (int) areaBounds.getMinX() + BORDER_WIDTH;
-        } else if(x > areaBounds.getMaxX() - BORDER_WIDTH) {
-            x = (int) areaBounds.getMaxX() - BORDER_WIDTH;
+        if(x + minX < minX + BORDER_WIDTH) {
+            x = BORDER_WIDTH;
+        } else if(x + minX > maxX - BORDER_WIDTH) {
+            x = maxX - minX - BORDER_WIDTH;
         }
         return x;
     }
 
     private int parseY(int y) {
-        if(y < areaBounds.getMinY() + BORDER_WIDTH) {
-            y = (int) areaBounds.getMinY() + BORDER_WIDTH;
-        } else if(y > areaBounds.getMaxY() - BORDER_WIDTH) {
-            y = (int) areaBounds.getMaxY() - BORDER_WIDTH;
+        if(y + minY < minY + BORDER_WIDTH) {
+            y = BORDER_WIDTH;
+        } else if(y + minY > maxY - BORDER_WIDTH) {
+            y = maxY - minY - BORDER_WIDTH;
         }
         return y;
     }

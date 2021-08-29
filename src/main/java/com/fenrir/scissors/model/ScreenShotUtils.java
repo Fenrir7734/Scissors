@@ -27,7 +27,7 @@ public class ScreenShotUtils {
     }
 
     public static WritableImage takeScreenshot(Area area) {
-        return takeScreenshot(area.getStartX(), area.getStartY(), area.getWidth(), area.getHeight());
+        return takeScreenshot(area.getAbsoluteStartX(), area.getAbsoluteStartY(), area.getWidth(), area.getHeight());
     }
 
     public static Background getCurrentWindowScreenshotAsBackground(Screen screen) {
