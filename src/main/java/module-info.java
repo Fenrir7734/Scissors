@@ -14,4 +14,5 @@ module com.fenrir.scissors {
     exports com.fenrir.scissors.test;
     exports com.fenrir.scissors.controllers;
     exports com.fenrir.scissors.model.area;
+    exports com.fenrir.scissors.model.screenshot;
 }

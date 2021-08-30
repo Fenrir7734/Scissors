@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.StackPane?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.CaptureWindowController">
+   <children>
+      <StackPane fx:id="backgroundHolder" prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Canvas fx:id="captureAreaCanvas" height="200.0" width="200.0" />
+         </children>
+      </StackPane>
+   </children>
+</StackPane>

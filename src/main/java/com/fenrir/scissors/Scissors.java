@@ -38,6 +38,10 @@ public class Scissors extends Application {
         stage.setHeight(height);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public static Scissors getInstance() {
         return scissors;
     }

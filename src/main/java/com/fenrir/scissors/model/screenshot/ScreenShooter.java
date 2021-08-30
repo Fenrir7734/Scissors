@@ -7,7 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.robot.Robot;
 import javafx.stage.Screen;
 
-public class ScreenShotUtils {
+public class Screenshoter {
     public static WritableImage takeScreenshot(int x, int y, int width, int height) {
         WritableImage image = new WritableImage(width, height);
         return new Robot().getScreenCapture(image, x, y, width, height);
@@ -31,7 +31,7 @@ public class ScreenShotUtils {
     }
 
     public static Background getCurrentWindowScreenshotAsBackground(Screen screen) {
-        WritableImage image = ScreenShotUtils.takeScreenshot(screen);
+        WritableImage image = Screenshoter.takeScreenshot(screen);
 
         return new Background(
                 new BackgroundImage(

@@ -59,7 +59,7 @@
                <ToggleButton fx:id="ellipseToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
                 <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
             </HBox>
-            <Canvas fx:id="screenDisplay" />
+            <Canvas fx:id="screenDisplay" height="400.0" width="600.0" />
          </children>
       </VBox>
    </children>
