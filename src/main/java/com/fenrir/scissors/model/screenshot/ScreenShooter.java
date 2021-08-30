@@ -1,4 +1,4 @@
-package com.fenrir.scissors.model;
+package com.fenrir.scissors.model.screenshot;
 
 import com.fenrir.scissors.model.area.Area;
 import javafx.geometry.Rectangle2D;
@@ -7,9 +7,13 @@ import javafx.scene.layout.*;
 import javafx.scene.robot.Robot;
 import javafx.stage.Screen;
 
-public class Screenshoter {
-    public static WritableImage takeScreenshot(int x, int y, int width, int height) {
-        WritableImage image = new WritableImage(width, height);
+public class ScreenShooter {
+    public static WritableImage takeScreenshot(double x, double y, double width, double height) {
+        if(width <= 0 || height <= 0) {
+            return null;
+        }
+
+        WritableImage image = new WritableImage((int) width, (int) height);
         return new Robot().getScreenCapture(image, x, y, width, height);
     }
 
@@ -31,7 +35,7 @@ public class Screenshoter {
     }
 
     public static Background getCurrentWindowScreenshotAsBackground(Screen screen) {
-        WritableImage image = Screenshoter.takeScreenshot(screen);
+        WritableImage image = ScreenShooter.takeScreenshot(screen);
 
         return new Background(
                 new BackgroundImage(

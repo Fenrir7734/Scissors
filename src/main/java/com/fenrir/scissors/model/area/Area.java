@@ -1,14 +1,14 @@
 package com.fenrir.scissors.model.area;
 
 public class Area {
-    private int X1;
-    private int Y1;
-    private int X2;
-    private int Y2;
-    private final int minX;
-    private final int minY;
+    private double X1;
+    private double Y1;
+    private double X2;
+    private double Y2;
+    private final double minX;
+    private final double minY;
 
-    public Area(int minX, int minY) {
+    public Area(double minX, double minY) {
         X1 = 0;
         X2 = 0;
         Y1 = 0;
@@ -17,59 +17,59 @@ public class Area {
         this.minY = minY;
     }
 
-    public int getRelativeStartX() {
+    public double getRelativeStartX() {
         return Math.min(X1, X2);
     }
 
-    public int getRelativeStartY() {
+    public double getRelativeStartY() {
         return Math.min(Y1, Y2);
     }
 
-    public int getRelativeEndX() {
+    public double getRelativeEndX() {
         return Math.max(X1, X2);
     }
 
-    public int getRelativeEndY() {
+    public double getRelativeEndY() {
         return Math.max(Y1, Y2);
     }
 
-    public int getAbsoluteStartX() {
+    public double getAbsoluteStartX() {
         return Math.min(X1, X2) + minX;
     }
 
-    public int getAbsoluteStartY() {
+    public double getAbsoluteStartY() {
         return Math.min(Y1, Y2) + minY;
     }
 
-    public int getAbsoluteEndX() {
+    public double getAbsoluteEndX() {
         return Math.max(X1, X2) + minX;
     }
 
-    public int getAbsoluteEndY() {
+    public double getAbsoluteEndY() {
         return Math.max(Y1, Y2) + minY;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return Math.abs(X2 - X1);
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return Math.abs(Y2 - Y1);
     }
 
-    public void setX1(int x) {
+    public void setX1(double x) {
         this.X1 = x;
     }
 
-    public void setY1(int y) {
+    public void setY1(double y) {
         this.Y1 = y;
     }
 
-    public void setX2(int x) {
+    public void setX2(double x) {
         this.X2 = x;
     }
 
-    public void setY2(int y) {
+    public void setY2(double y) {
         this.Y2 = y;
     }
 }

@@ -2,9 +2,8 @@ package com.fenrir.scissors.model;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.*;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.awt.*;
 
@@ -38,6 +37,15 @@ public class ScreenDetector {
             }
         }
         return null;
+    }
+
+    public ObservableList<Screen> detectStageScreens(Stage stage) {
+        return Screen.getScreensForRectangle(
+                stage.getX(),
+                stage.getY(),
+                stage.getWidth(),
+                stage.getWidth()
+        );
     }
 
     public Screen getCurrentScreen() {
