@@ -26,12 +26,14 @@ public class Properties {
 
     private final record Favorite(String name, Path path) {
 
-        public Path getPath() {
-            return path;
+        @Override
+        public String name() {
+            return name;
         }
 
-        public String getName() {
-            return name;
+        @Override
+        public Path path() {
+            return path;
         }
     }
 

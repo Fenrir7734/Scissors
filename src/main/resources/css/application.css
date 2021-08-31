@@ -11,9 +11,6 @@
 }
 
 #mainWindowPane {
-    -fx-pref-width: 600;
-    -fx-max-width: -fx-pref-width;
-    -fx-min-width: -fx-pref-width;
     -fx-padding: 0;
 }
 

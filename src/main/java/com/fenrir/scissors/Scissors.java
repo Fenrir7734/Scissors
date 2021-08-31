@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -12,6 +13,9 @@ import java.util.Objects;
 public class Scissors extends Application {
     public static final double MIN_HEIGHT = 79;
     public static final double MIN_WIDTH = 600;
+    public static final double TOOLBAR_HEIGHT = 74;
+    public static final double MIN_CANVAS_WIDTH = 600;
+    public static final double MIN_CANVAS_HEIGHT = 400;
 
     public static Scissors scissors;
 
@@ -26,15 +30,12 @@ public class Scissors extends Application {
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);
+        stage.setHeight(MIN_HEIGHT);
         stage.show();
     }
 
     public void setSize(double width, double height) {
         stage.setWidth(width);
-        stage.setHeight(height);
-    }
-
-    public void setSize(double height) {
         stage.setHeight(height);
     }
 

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -18,9 +19,9 @@
 <?import org.controlsfx.glyphfont.Glyph?>
 -->
 
-<AnchorPane fx:id="mainWindowPane" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="600.0" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.MainWindowController">
+<AnchorPane fx:id="mainWindowPane" maxHeight="-Infinity" maxWidth="600.0" minHeight="-Infinity" prefHeight="524.0" prefWidth="600.0" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.MainWindowController">
    <children>
-      <VBox fx:id="mainWindowVBox" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="600.0">
+      <VBox fx:id="mainWindowVBox" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ButtonBar fx:id="mainButtonBar" buttonMinWidth="24.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
@@ -59,7 +60,11 @@
                <ToggleButton fx:id="ellipseToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
                 <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
             </HBox>
-            <Canvas fx:id="screenDisplay" height="400.0" width="600.0" />
+            <ScrollPane fx:id="canvasContainer">
+               <content>
+                  <Canvas fx:id="screenDisplay" height="400.0" width="600.0" />
+               </content>
+            </ScrollPane>
          </children>
       </VBox>
    </children>

@@ -5,9 +5,10 @@ import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.area.Area;
 import com.fenrir.scissors.model.area.AreaSelector;
 import com.fenrir.scissors.model.screenshot.ScreenShooter;
+import com.fenrir.scissors.model.screenshot.Screenshot;
 import javafx.animation.AnimationTimer;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCombination;
@@ -16,21 +17,22 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
 
 public class CaptureWindowController {
     private final int BORDER_WIDTH;
 
     private Stage captureWindow;
+    private Scene scene;
 
     @FXML private StackPane backgroundHolder;
     @FXML private Canvas captureAreaCanvas;
 
     private final ScreenDetector detector;
     private AreaSelector selector;
-    private AnimationTimer screenDetection;
+    private final AnimationTimer screenDetection;
+
+    private Screenshot screenshot;
 
     public CaptureWindowController() {
         BORDER_WIDTH = Properties.getInstance().getBorderWidth();
@@ -52,16 +54,16 @@ public class CaptureWindowController {
     public void startCapturing() {
         screenDetection.start();
 
-        setFocusScreen();
-        captureWindow.setFullScreen(true);
         captureWindow.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        captureWindow.setFullScreen(true);
         captureWindow.show();
+        setFocusScreen();
 
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> mousePressedEvent(mouseEvent.getX(), mouseEvent.getY()));
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> mouseDraggedEvent(mouseEvent.getX(), mouseEvent.getY()));
         captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> mouseReleasedEvent(mouseEvent.getX(), mouseEvent.getY()));
 
-        captureAreaCanvas.setOnKeyPressed(keyEvent -> {
+        scene.setOnKeyPressed(keyEvent -> {
             screenDetection.stop();
             captureWindow.close();
         });
@@ -85,13 +87,7 @@ public class CaptureWindowController {
         if(selectedArea.getWidth() > 0 && selectedArea.getWidth() > 0) {
             clearCanvas();
             captureWindow.close();
-
-            try {
-                ImageIO.write(SwingFXUtils.fromFXImage(ScreenShooter.takeScreenshot(selectedArea), null), "png", new File("/home/fenrir/screenshot.png"));
-                MainWindowController.getInstance().drawImageOnCanvas(ScreenShooter.takeScreenshot(selectedArea));
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            MainWindowController.getInstance().drawScreenshotOnCanvas(screenshot.cropScreenshot(selectedArea));
         } else {
             drawOverlay();
         }
@@ -102,12 +98,15 @@ public class CaptureWindowController {
         int screenWidth = detector.getCurrentScreenWidth();
         int screenHeight = detector.getCurrentScreenHeight();
 
-        backgroundHolder.setBackground(
-                ScreenShooter.getCurrentWindowScreenshotAsBackground(detector.getCurrentScreen())
-        );
+        screenshot = new Screenshot(ScreenShooter.takeScreenshot(detector.getCurrentScreen()));
+
+        backgroundHolder.setBackground(screenshot.getScreenshotAsBackground());
 
         captureAreaCanvas.setWidth(screenWidth);
         captureAreaCanvas.setHeight(screenHeight);
+
+        captureAreaCanvas.setLayoutX(location.x);
+        captureAreaCanvas.setLayoutY(location.y);
 
         captureWindow.setWidth(screenWidth);
         captureWindow.setHeight(screenHeight);
@@ -200,5 +199,9 @@ public class CaptureWindowController {
 
     public void setStage(Stage stage) {
         captureWindow = stage;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
     }
 }
