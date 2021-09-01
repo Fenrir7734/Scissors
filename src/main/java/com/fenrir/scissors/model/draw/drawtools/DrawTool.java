@@ -1,7 +1,9 @@
-package com.fenrir.scissors.model.draw;
+package com.fenrir.scissors.model.draw.drawtools;
 
+import com.fenrir.scissors.model.draw.Tool;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 public abstract class DrawTool extends Tool {
@@ -11,28 +13,28 @@ public abstract class DrawTool extends Tool {
     }
 
     @Override
-    protected void mousePressedEvent(double x, double y) {
+    protected void mousePressedEvent(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
         initTool();
         graphicsContext.beginPath();
-        graphicsContext.moveTo(x, y);
+        graphicsContext.moveTo(event.getX(), event.getY());
         graphicsContext.stroke();
     }
 
     @Override
-    protected void mouseDraggedEvent(double x, double y) {
+    protected void mouseDraggedEvent(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
-        graphicsContext.lineTo(x, y);
+        graphicsContext.lineTo(event.getX(), event.getY());
         graphicsContext.stroke();
         graphicsContext.closePath();
         graphicsContext.beginPath();
-        graphicsContext.moveTo(x, y);
+        graphicsContext.moveTo(event.getX(), event.getY());
     }
 
     @Override
-    protected void mouseReleasedEvent(double x, double y) {
+    protected void mouseReleasedEvent(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
-        graphicsContext.lineTo(x, y);
+        graphicsContext.lineTo(event.getX(), event.getY());
         graphicsContext.stroke();
         graphicsContext.closePath();
     }

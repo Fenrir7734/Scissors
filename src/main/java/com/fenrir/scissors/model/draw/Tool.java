@@ -1,5 +1,6 @@
 package com.fenrir.scissors.model.draw;
 
+import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -10,22 +11,34 @@ public abstract class Tool {
     protected Canvas canvas;
     protected StackPane canvasContainer;
 
+    private final EventHandler<MouseEvent> mousePressedHandler = this::mousePressedEvent;
+    private final EventHandler<MouseEvent> mouseDraggedHandler = this::mouseDraggedEvent;
+    private final EventHandler<MouseEvent> mouseReleasedHandler = this::mouseReleasedEvent;
+
     public Tool(Canvas canvas, StackPane canvasContainer) {
         this.canvas = canvas;
         this.canvasContainer = canvasContainer;
-
-        initTool();
-
-        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> mousePressedEvent(mouseEvent.getX(), mouseEvent.getY()));
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> mouseDraggedEvent(mouseEvent.getX(), mouseEvent.getY()));
-        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> mouseReleasedEvent(mouseEvent.getX(), mouseEvent.getY()));
     }
 
-    abstract protected void mousePressedEvent(double x, double y);
+    public void enableTool() {
+        initTool();
 
-    abstract protected void mouseDraggedEvent(double x, double y);
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mousePressedHandler);
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseDraggedHandler);
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseReleasedHandler);
+    }
 
-    abstract protected void mouseReleasedEvent(double x, double y);
+    public void disableTool() {
+        canvas.removeEventHandler(MouseEvent.MOUSE_PRESSED, mousePressedHandler);
+        canvas.removeEventHandler(MouseEvent.MOUSE_DRAGGED, mouseDraggedHandler);
+        canvas.removeEventHandler(MouseEvent.MOUSE_RELEASED, mouseReleasedHandler);
+    }
+
+    abstract protected void mousePressedEvent(MouseEvent event);
+
+    abstract protected void mouseDraggedEvent(MouseEvent event);
+
+    abstract protected void mouseReleasedEvent(MouseEvent event);
 
     abstract protected void initTool();
 

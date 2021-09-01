@@ -1,4 +1,4 @@
-package com.fenrir.scissors.model.draw;
+package com.fenrir.scissors.model.draw.drawtools;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

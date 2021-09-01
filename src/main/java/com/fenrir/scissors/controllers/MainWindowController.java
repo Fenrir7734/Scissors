@@ -2,8 +2,11 @@ package com.fenrir.scissors.controllers;
 
 import com.fenrir.scissors.Scissors;
 import com.fenrir.scissors.model.ScreenDetector;
-import com.fenrir.scissors.model.draw.DrawLine;
-import com.fenrir.scissors.model.draw.PencilTool;
+import com.fenrir.scissors.model.draw.Tool;
+import com.fenrir.scissors.model.draw.drawtools.EraserTool;
+import com.fenrir.scissors.model.draw.drawtools.MarkerTool;
+import com.fenrir.scissors.model.draw.shapetools.DrawLine;
+import com.fenrir.scissors.model.draw.drawtools.PencilTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -19,7 +21,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -55,6 +56,8 @@ public class MainWindowController {
 
     private CaptureWindowController captureWindowController;
 
+    private Tool currentTool;
+
     @FXML
     public void initialize() {
         screenNameField.setVisible(false);
@@ -68,6 +71,8 @@ public class MainWindowController {
 
         screenshotContainer.setFitToWidth(false);
         screenshotContainer.setFitToHeight(false);
+
+        currentTool = new PencilTool(screenshotCanvas, canvasContainer);
 
         instance = this;
     }
@@ -105,24 +110,6 @@ public class MainWindowController {
         double screenshotWidth = screenshot.getImage().getWidth();
         double screenshotHeight = screenshot.getImage().getHeight();
 
-        System.out.println("screenshot: " + screenshotWidth + " " + screenshotHeight);
-/*
-        if(screenshotWidth < Scissors.MIN_CANVAS_WIDTH) {
-            screenshotContainer.getContent()
-                    .setTranslateX((Scissors.MIN_CANVAS_WIDTH - screenshotWidth) / 2);
-        } else {
-            screenshotContainer.getContent()
-                    .setTranslateX(0);
-        }
-
-        if(screenshotHeight < Scissors.MIN_CANVAS_HEIGHT) {
-            screenshotContainer.getContent()
-                    .setTranslateY((Scissors.MIN_CANVAS_HEIGHT - screenshotHeight) / 2);
-        } else {
-            screenshotContainer.getContent()
-                    .setTranslateY(0);
-        }
- */
         screenshotCanvas.setWidth(screenshotWidth);
         screenshotCanvas.setHeight(screenshotHeight);
         screenshotCanvas.getGraphicsContext2D()
@@ -159,13 +146,52 @@ public class MainWindowController {
 
     @FXML
     private void pencilTool() {
-        new PencilTool(screenshotCanvas, canvasContainer);
+        currentTool.disableTool();
+        currentTool = new PencilTool(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
     }
 
     @FXML
-    private void drawLine() {
-        new DrawLine(screenshotCanvas, canvasContainer);
+    private void markerTool() {
+        currentTool.disableTool();
+        currentTool = new MarkerTool(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
     }
+
+    @FXML
+    private void eraserTool() {
+        currentTool.disableTool();
+        currentTool = new EraserTool(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
+    }
+
+    @FXML
+    private void blurTool() {
+
+    }
+
+    @FXML
+    private void lineTool() {
+        currentTool.disableTool();
+        //currentTool = new DrawLine(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
+    }
+
+    @FXML
+    private void rectangleTool() {
+
+    }
+
+    @FXML
+    private void ellipseTool() {
+
+    }
+
+    @FXML
+    private void arrowTool() {
+
+    }
+
 
     public static MainWindowController getInstance() {
         return instance;

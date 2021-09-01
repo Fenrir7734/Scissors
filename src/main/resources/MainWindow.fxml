@@ -47,19 +47,17 @@
                 </TextField>
             </HBox>
             <HBox fx:id="toolbox">
-               <ToggleButton mnemonicParsing="false" onAction="#pencilTool" text="ToggleButton">
+               <ToggleButton fx:id="pencilToolButton" mnemonicParsing="false" onAction="#pencilTool" text="ToggleButton">
                   <toggleGroup>
                      <ToggleGroup fx:id="toolboxGroup" />
-                  </toggleGroup>
-               </ToggleButton>
-               <ToggleButton fx:id="pencilToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton fx:id="markerToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-                <ToggleButton fx:id="blurToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-                <ToggleButton fx:id="arrowToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton fx:id="rectangleToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton fx:id="lineToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-               <ToggleButton fx:id="ellipseToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
-                <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                  </toggleGroup></ToggleButton>
+               <ToggleButton fx:id="markerToolButton" mnemonicParsing="false" onAction="#markerTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                <ToggleButton fx:id="blurToolButton" mnemonicParsing="false" onAction="#blurTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="lineToolButton" mnemonicParsing="false" onAction="#lineTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                <ToggleButton fx:id="arrowToolButton" mnemonicParsing="false" onAction="#arrowTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="rectangleToolButton" mnemonicParsing="false" onAction="#rectangleTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
+               <ToggleButton fx:id="ellipseToolButton" mnemonicParsing="false" onAction="#ellipseTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
+                <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" onAction="#eraserTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
             </HBox>
             <ScrollPane fx:id="screenshotContainer">
                <content>
