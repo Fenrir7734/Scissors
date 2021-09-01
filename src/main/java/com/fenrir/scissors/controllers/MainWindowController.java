@@ -5,8 +5,11 @@ import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.draw.Tool;
 import com.fenrir.scissors.model.draw.drawtools.EraserTool;
 import com.fenrir.scissors.model.draw.drawtools.MarkerTool;
-import com.fenrir.scissors.model.draw.shapetools.DrawLine;
 import com.fenrir.scissors.model.draw.drawtools.PencilTool;
+import com.fenrir.scissors.model.draw.shapetools.ArrowTool;
+import com.fenrir.scissors.model.draw.shapetools.EllipseTool;
+import com.fenrir.scissors.model.draw.shapetools.LineTool;
+import com.fenrir.scissors.model.draw.shapetools.RectangleTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -173,23 +176,29 @@ public class MainWindowController {
     @FXML
     private void lineTool() {
         currentTool.disableTool();
-        //currentTool = new DrawLine(screenshotCanvas, canvasContainer);
+        currentTool = new LineTool(screenshotCanvas, canvasContainer);
         currentTool.enableTool();
     }
 
     @FXML
     private void rectangleTool() {
-
+        currentTool.disableTool();
+        currentTool = new RectangleTool(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
     }
 
     @FXML
     private void ellipseTool() {
-
+        currentTool.disableTool();
+        currentTool = new EllipseTool(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
     }
 
     @FXML
     private void arrowTool() {
-
+        currentTool.disableTool();
+        currentTool = new ArrowTool(screenshotCanvas, canvasContainer);
+        currentTool.enableTool();
     }
 
 
