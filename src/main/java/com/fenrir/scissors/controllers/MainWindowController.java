@@ -2,6 +2,8 @@ package com.fenrir.scissors.controllers;
 
 import com.fenrir.scissors.Scissors;
 import com.fenrir.scissors.model.ScreenDetector;
+import com.fenrir.scissors.model.draw.DrawLine;
+import com.fenrir.scissors.model.draw.PencilTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -16,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,7 +41,7 @@ public class MainWindowController {
     @FXML private TextField screenNameField;
     @FXML private HBox toolbox;
     @FXML private ToggleGroup toolboxGroup;
-    @FXML private Canvas screenDisplay;
+    @FXML private Canvas screenshotCanvas;
     @FXML private ToggleButton pencilToolButton;
     @FXML private ToggleButton markerToolButton;
     @FXML private ToggleButton blurToolButton;
@@ -46,7 +50,8 @@ public class MainWindowController {
     @FXML private ToggleButton lineToolButton;
     @FXML private ToggleButton ellipseToolButton;
     @FXML private ToggleButton eraserToolButton;
-    @FXML private ScrollPane canvasContainer;
+    @FXML private ScrollPane screenshotContainer;
+    @FXML private StackPane canvasContainer;
 
     private CaptureWindowController captureWindowController;
 
@@ -56,13 +61,13 @@ public class MainWindowController {
         screenNameField.setManaged(false);
         toolbox.setVisible(false);
         toolbox.setManaged(false);
-        screenDisplay.setVisible(false);
-        screenDisplay.setManaged(false);
-        canvasContainer.setVisible(false);
-        canvasContainer.setManaged(false);
+        screenshotCanvas.setVisible(false);
+        screenshotCanvas.setManaged(false);
+        screenshotContainer.setVisible(false);
+        screenshotContainer.setManaged(false);
 
-        canvasContainer.setFitToWidth(false);
-        canvasContainer.setFitToHeight(false);
+        screenshotContainer.setFitToWidth(false);
+        screenshotContainer.setFitToHeight(false);
 
         instance = this;
     }
@@ -94,36 +99,37 @@ public class MainWindowController {
         double maxWidth = stageScreenBounds.getWidth();
         double maxHeight = stageScreenBounds.getHeight();
 
-        canvasContainer.setPrefViewportWidth(maxWidth);
-        canvasContainer.setPrefViewportHeight(maxHeight);
+        screenshotContainer.setPrefViewportWidth(maxWidth);
+        screenshotContainer.setPrefViewportHeight(maxHeight);
 
         double screenshotWidth = screenshot.getImage().getWidth();
         double screenshotHeight = screenshot.getImage().getHeight();
 
+        System.out.println("screenshot: " + screenshotWidth + " " + screenshotHeight);
+/*
         if(screenshotWidth < Scissors.MIN_CANVAS_WIDTH) {
-            canvasContainer.getContent()
+            screenshotContainer.getContent()
                     .setTranslateX((Scissors.MIN_CANVAS_WIDTH - screenshotWidth) / 2);
         } else {
-            canvasContainer.getContent()
+            screenshotContainer.getContent()
                     .setTranslateX(0);
         }
 
         if(screenshotHeight < Scissors.MIN_CANVAS_HEIGHT) {
-            canvasContainer.getContent()
+            screenshotContainer.getContent()
                     .setTranslateY((Scissors.MIN_CANVAS_HEIGHT - screenshotHeight) / 2);
         } else {
-            canvasContainer.getContent()
+            screenshotContainer.getContent()
                     .setTranslateY(0);
         }
-
-        screenDisplay.setWidth(screenshotWidth);
-        screenDisplay.setHeight(screenshotHeight);
-        screenDisplay.getGraphicsContext2D()
+ */
+        screenshotCanvas.setWidth(screenshotWidth);
+        screenshotCanvas.setHeight(screenshotHeight);
+        screenshotCanvas.getGraphicsContext2D()
                 .drawImage(screenshot.getImage(), 0, 0, screenshotWidth, screenshotHeight);
 
         double stageWidth = Math.max(Scissors.MIN_WIDTH, screenshotWidth);
         double stageHeight = Scissors.MIN_HEIGHT + Scissors.TOOLBAR_HEIGHT + Math.max(screenshotHeight, Scissors.MIN_CANVAS_HEIGHT);
-        System.out.println(stageHeight);
 
         if(stageWidth > maxWidth) {
             stageWidth = maxWidth;
@@ -145,10 +151,20 @@ public class MainWindowController {
         screenNameField.setManaged(true);
         toolbox.setVisible(true);
         toolbox.setManaged(true);
-        screenDisplay.setVisible(true);
-        screenDisplay.setManaged(true);
-        canvasContainer.setVisible(true);
-        canvasContainer.setManaged(true);
+        screenshotCanvas.setVisible(true);
+        screenshotCanvas.setManaged(true);
+        screenshotContainer.setVisible(true);
+        screenshotContainer.setManaged(true);
+    }
+
+    @FXML
+    private void pencilTool() {
+        new PencilTool(screenshotCanvas, canvasContainer);
+    }
+
+    @FXML
+    private void drawLine() {
+        new DrawLine(screenshotCanvas, canvasContainer);
     }
 
     public static MainWindowController getInstance() {

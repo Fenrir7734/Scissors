@@ -13,6 +13,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <!--
@@ -46,7 +47,7 @@
                 </TextField>
             </HBox>
             <HBox fx:id="toolbox">
-               <ToggleButton mnemonicParsing="false" text="ToggleButton">
+               <ToggleButton mnemonicParsing="false" onAction="#pencilTool" text="ToggleButton">
                   <toggleGroup>
                      <ToggleGroup fx:id="toolboxGroup" />
                   </toggleGroup>
@@ -60,9 +61,13 @@
                <ToggleButton fx:id="ellipseToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
                 <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" text="ToggleButton" toggleGroup="$toolboxGroup" />
             </HBox>
-            <ScrollPane fx:id="canvasContainer">
+            <ScrollPane fx:id="screenshotContainer">
                <content>
-                  <Canvas fx:id="screenDisplay" height="400.0" width="600.0" />
+                  <StackPane fx:id="canvasContainer" prefHeight="400.0" prefWidth="600.0">
+                     <children>
+                        <Canvas fx:id="screenshotCanvas" height="400.0" width="600.0" />
+                     </children>
+                  </StackPane>
                </content>
             </ScrollPane>
          </children>
