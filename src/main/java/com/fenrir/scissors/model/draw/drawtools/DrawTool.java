@@ -15,7 +15,6 @@ public abstract class DrawTool extends Tool {
     @Override
     protected void mousePressedEvent(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
-        initTool();
         graphicsContext.beginPath();
         graphicsContext.moveTo(event.getX(), event.getY());
         graphicsContext.stroke();

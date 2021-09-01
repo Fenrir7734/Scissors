@@ -3,7 +3,6 @@ package com.fenrir.scissors.model.draw.drawtools;
 import com.fenrir.scissors.model.draw.Tool;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 

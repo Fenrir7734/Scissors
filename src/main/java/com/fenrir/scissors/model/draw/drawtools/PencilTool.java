@@ -17,6 +17,6 @@ public class PencilTool extends DrawTool {
 
         graphicsContext.setFill(Color.RED);
         graphicsContext.setStroke(Color.RED);
-        graphicsContext.setLineWidth(1);
+        graphicsContext.setLineWidth(2);
     }
 }
