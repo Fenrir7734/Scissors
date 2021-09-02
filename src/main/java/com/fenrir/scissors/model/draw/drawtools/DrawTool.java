@@ -13,7 +13,7 @@ public abstract class DrawTool extends Tool {
     }
 
     @Override
-    protected void mousePressedEvent(MouseEvent event) {
+    protected void handleMousePressed(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
         graphicsContext.beginPath();
         graphicsContext.moveTo(event.getX(), event.getY());
@@ -21,7 +21,7 @@ public abstract class DrawTool extends Tool {
     }
 
     @Override
-    protected void mouseDraggedEvent(MouseEvent event) {
+    protected void handleMouseDragged(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
         graphicsContext.lineTo(event.getX(), event.getY());
         graphicsContext.stroke();
@@ -31,7 +31,7 @@ public abstract class DrawTool extends Tool {
     }
 
     @Override
-    protected void mouseReleasedEvent(MouseEvent event) {
+    protected void handleMouseReleased(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
         graphicsContext.lineTo(event.getX(), event.getY());
         graphicsContext.stroke();

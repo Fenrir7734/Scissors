@@ -14,7 +14,7 @@ public class EllipseTool extends ShapeTool {
     }
 
     @Override
-    protected void mouseDraggedEvent(MouseEvent event) {
+    protected void handleMouseDragged(MouseEvent event) {
         GraphicsContext graphicsContext = super.layer.getGraphicsContext2D();
         graphicsContext.clearRect(0, 0, super.layer.getWidth(), super.layer.getHeight());
         drawOval(

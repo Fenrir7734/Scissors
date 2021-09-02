@@ -14,8 +14,8 @@ public class MarkerTool extends DrawTool {
     }
 
     @Override
-    protected void mouseReleasedEvent(MouseEvent event) {
-        super.mouseReleasedEvent(event);
+    protected void handleMouseReleased(MouseEvent event) {
+        super.handleMouseReleased(event);
 
         super.canvas.getGraphicsContext2D().setEffect(null);
     }

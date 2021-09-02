@@ -52,7 +52,6 @@
                      <ToggleGroup fx:id="toolboxGroup" />
                   </toggleGroup></ToggleButton>
                <ToggleButton fx:id="markerToolButton" mnemonicParsing="false" onAction="#markerTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
-                <ToggleButton fx:id="blurToolButton" mnemonicParsing="false" onAction="#blurTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
                <ToggleButton fx:id="lineToolButton" mnemonicParsing="false" onAction="#lineTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
                 <ToggleButton fx:id="arrowToolButton" mnemonicParsing="false" onAction="#arrowTool" text="ToggleButton" toggleGroup="$toolboxGroup" />
                <ToggleButton fx:id="rectangleToolButton" mnemonicParsing="false" onAction="#rectangleTool" text="ToggleButton" toggleGroup="$toolboxGroup" />

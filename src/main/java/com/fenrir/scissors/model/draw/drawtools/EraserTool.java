@@ -13,19 +13,19 @@ public class EraserTool extends Tool {
     }
 
     @Override
-    protected void mousePressedEvent(MouseEvent event) {
+    protected void handleMousePressed(MouseEvent event) {
         GraphicsContext graphicsContext = super.canvas.getGraphicsContext2D();
         graphicsContext.clearRect(event.getX() - 2, event.getY() - 2, 20, 20);
     }
 
     @Override
-    protected void mouseDraggedEvent(MouseEvent event) {
-        mousePressedEvent(event);
+    protected void handleMouseDragged(MouseEvent event) {
+        handleMousePressed(event);
     }
 
     @Override
-    protected void mouseReleasedEvent(MouseEvent event) {
-        mousePressedEvent(event);
+    protected void handleMouseReleased(MouseEvent event) {
+        handleMousePressed(event);
     }
 
     @Override

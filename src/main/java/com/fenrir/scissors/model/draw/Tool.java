@@ -2,7 +2,6 @@ package com.fenrir.scissors.model.draw;
 
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
@@ -11,9 +10,9 @@ public abstract class Tool {
     protected Canvas canvas;
     protected StackPane canvasContainer;
 
-    private final EventHandler<MouseEvent> mousePressedHandler = this::mousePressedEvent;
-    private final EventHandler<MouseEvent> mouseDraggedHandler = this::mouseDraggedEvent;
-    private final EventHandler<MouseEvent> mouseReleasedHandler = this::mouseReleasedEvent;
+    private final EventHandler<MouseEvent> mousePressedHandler = this::handleMousePressed;
+    private final EventHandler<MouseEvent> mouseDraggedHandler = this::handleMouseDragged;
+    private final EventHandler<MouseEvent> mouseReleasedHandler = this::handleMouseReleased;
 
     public Tool(Canvas canvas, StackPane canvasContainer) {
         this.canvas = canvas;
@@ -34,11 +33,11 @@ public abstract class Tool {
         canvas.removeEventHandler(MouseEvent.MOUSE_RELEASED, mouseReleasedHandler);
     }
 
-    abstract protected void mousePressedEvent(MouseEvent event);
+    abstract protected void handleMousePressed(MouseEvent event);
 
-    abstract protected void mouseDraggedEvent(MouseEvent event);
+    abstract protected void handleMouseDragged(MouseEvent event);
 
-    abstract protected void mouseReleasedEvent(MouseEvent event);
+    abstract protected void handleMouseReleased(MouseEvent event);
 
     abstract protected void initTool();
 

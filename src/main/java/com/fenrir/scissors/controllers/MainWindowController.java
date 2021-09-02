@@ -169,11 +169,6 @@ public class MainWindowController {
     }
 
     @FXML
-    private void blurTool() {
-
-    }
-
-    @FXML
     private void lineTool() {
         currentTool.disableTool();
         currentTool = new LineTool(screenshotCanvas, canvasContainer);

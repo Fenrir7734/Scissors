@@ -19,13 +19,13 @@ public abstract class ShapeTool extends Tool {
     }
 
     @Override
-    protected void mousePressedEvent(MouseEvent event) {
+    protected void handleMousePressed(MouseEvent event) {
         super.canvasContainer.getChildren().add(this.layer);
         this.startPoint = new Pair<>(event.getX(), event.getY());
     }
 
     @Override
-    protected void mouseReleasedEvent(MouseEvent event) {
+    protected void handleMouseReleased(MouseEvent event) {
         SnapshotParameters parameters = new SnapshotParameters();
         parameters.setFill(Color.TRANSPARENT);
 
