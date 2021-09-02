@@ -15,11 +15,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -57,9 +56,11 @@ public class MainWindowController {
     @FXML private ScrollPane screenshotContainer;
     @FXML private StackPane canvasContainer;
 
-    private CaptureWindowController captureWindowController;
-
     private Tool currentTool;
+
+    public static MainWindowController getInstance() {
+        return instance;
+    }
 
     @FXML
     public void initialize() {
@@ -81,12 +82,26 @@ public class MainWindowController {
     }
 
     @FXML
+    private void openSettings() {
+        try {
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/SettingsWindow.fxml")));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setResizable(true);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void captureScreen(ActionEvent event) {
         Scissors.getInstance().getStage().setIconified(true);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/CaptureWindow.fxml")));
             StackPane pane = fxmlLoader.load();
-            captureWindowController = fxmlLoader.getController();
+            CaptureWindowController captureWindowController = fxmlLoader.getController();
             Stage stage = new Stage();
             Scene scene = new Scene(pane);
             stage.setScene(scene);
@@ -121,11 +136,11 @@ public class MainWindowController {
         double stageWidth = Math.max(Scissors.MIN_WIDTH, screenshotWidth);
         double stageHeight = Scissors.MIN_HEIGHT + Scissors.TOOLBAR_HEIGHT + Math.max(screenshotHeight, Scissors.MIN_CANVAS_HEIGHT);
 
-        if(stageWidth > maxWidth) {
+        if (stageWidth > maxWidth) {
             stageWidth = maxWidth;
         }
 
-        if(stageHeight > maxHeight) {
+        if (stageHeight > maxHeight) {
             stageHeight = maxHeight;
         }
 
@@ -194,10 +209,5 @@ public class MainWindowController {
         currentTool.disableTool();
         currentTool = new ArrowTool(screenshotCanvas, canvasContainer);
         currentTool.enableTool();
-    }
-
-
-    public static MainWindowController getInstance() {
-        return instance;
     }
 }

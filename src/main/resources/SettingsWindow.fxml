@@ -28,8 +28,8 @@
                         <Label text="Save Path" />
                         <HBox fx:id="savePathPane" prefHeight="50.0" prefWidth="200.0">
                            <children>
-                              <TextField fx:id="pathTextField" />
-                              <Button fx:id="changePathButton" mnemonicParsing="false" text="Change..." />
+                              <TextField fx:id="pathTextField" editable="false" />
+                              <Button fx:id="changePathButton" mnemonicParsing="false" onAction="#changePath" text="Change..." />
                            </children>
                         </HBox>
                      </children>
@@ -37,7 +37,7 @@
                   <VBox fx:id="opacityContainer" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Opacity of area otside selection" />
-                        <Slider fx:id="opacitySlider" />
+                        <Slider fx:id="opacitySlider" blockIncrement="5.0" />
                      </children>
                   </VBox>
                </children>
@@ -49,7 +49,7 @@
               <VBox fx:id="favoritePane" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <ListView fx:id="favoriteListView" prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="addToFavoriteButton" mnemonicParsing="false" text="Add..." />
+                  <Button fx:id="addToFavoriteButton" mnemonicParsing="false" onAction="#addToFavorite" text="Add..." />
                </children></VBox>
           </content>
       </Tab>

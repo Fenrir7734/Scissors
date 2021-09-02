@@ -138,7 +138,7 @@ public class CaptureWindowController {
                 graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
         );
 
-        graphicsContext.setFill(Color.rgb(0, 0, 0, 0.5));
+        graphicsContext.setFill(Color.rgb(0, 0, 0, Properties.getInstance().getOpacity() / 100.0));
         graphicsContext.fillRect(
                 graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
                 graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,

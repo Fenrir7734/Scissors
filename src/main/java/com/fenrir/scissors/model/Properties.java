@@ -24,7 +24,7 @@ public class Properties {
     private int borderWidth;
     private final List<Favorite> favoriteList;
 
-    private final record Favorite(String name, Path path) {
+    public final record Favorite(String name, Path path) {
 
         @Override
         public String name() {
@@ -126,12 +126,26 @@ public class Properties {
     }
 
     public void addToFavorite(String name, String path) {
-        propertiesFileContent.put(
-                "favorite", new JSONObject().put("name", name).put("path", path)
-        );
+        JSONArray favoriteArray = propertiesFileContent.getJSONArray("favorite");
+        favoriteArray.put(new JSONObject().put("name", name).put("path", path));
         PropertiesUtils.writeProperties(propertiesFileContent);
 
         favoriteList.add(new Favorite(name, Path.of(path)));
+    }
+
+    public void removeFromFavorite(String name) {
+        JSONArray favoriteArray = new JSONArray();
+        Favorite toDelete = favoriteList.stream()
+                .filter(f -> f.name.equals(name))
+                .findFirst()
+                .get();
+        favoriteList.remove(toDelete);
+
+        for(Favorite f: favoriteList) {
+            favoriteArray.put(new JSONObject().put("name", f.name).put("path", f.path));
+        }
+        propertiesFileContent.put("favorite", favoriteArray);
+        PropertiesUtils.writeProperties(propertiesFileContent);
     }
 
     private static JSONObject getDefaultProperties() {
