@@ -2,6 +2,7 @@ package com.fenrir.scissors.controllers;
 
 import com.fenrir.scissors.Scissors;
 import com.fenrir.scissors.model.Properties;
+import com.fenrir.scissors.model.SavingUtils;
 import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.draw.Tool;
 import com.fenrir.scissors.model.draw.drawtools.EraserTool;
@@ -25,8 +26,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -36,6 +42,8 @@ import java.util.stream.Collectors;
 
 
 public class MainWindowController {
+    private final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
+
     private static MainWindowController instance;
 
     @FXML private AnchorPane mainWindowPane;
@@ -97,7 +105,12 @@ public class MainWindowController {
 
         screenshotCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
             screenshot = screenshot.canvasSnapshot(screenshotCanvas);
+            if(properties.isSaveToClipboard()) {
+                SavingUtils.copyToClipBoard(screenshot.getImage());
+            }
         });
+
+        screenNameField.textProperty().addListener(((observable, oldValue, newValue) -> screenshot.setName(newValue)));
     }
 
     @FXML
@@ -111,13 +124,37 @@ public class MainWindowController {
             stage.showAndWait();
             refreshFavorite();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error opening the settings window");
+            logger.error(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void saveToDefault() {
+        try {
+            SavingUtils.saveTo(screenshot.getImage(), properties.getDefaultPath(), screenshot.getName());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Saving failed.");
+            alert.showAndWait();
         }
     }
 
     @FXML
     private void saveToLocal() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File("."));
+            File selectedFile = fileChooser.showSaveDialog(Scissors.scissors.getStage());
 
+            if (selectedFile != null) {
+                SavingUtils.saveTo(screenshot.getImage(), selectedFile);
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Saving failed.");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -126,7 +163,13 @@ public class MainWindowController {
     }
 
     private void saveToFavorite(Path path) {
-
+        try {
+            SavingUtils.saveTo(screenshot.getImage(), path, screenshot.getName());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Saving failed.");
+            alert.showAndWait();
+        }
     }
 
     private void refreshFavorite() {
@@ -175,12 +218,15 @@ public class MainWindowController {
             captureWindowController.setStage(stage);
             captureWindowController.setScene(scene);
             captureWindowController.startCapturing();
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
+        } catch (IOException e) {
+            logger.error("Error opening the capture window");
+            logger.error(e.getMessage());
         }
     }
 
     public void drawScreenshotOnCanvas() {
+        screenNameField.setText(screenshot.getName());
+
         Rectangle2D stageScreenBounds = new ScreenDetector()
                 .detectStageScreens(Scissors.getInstance().getStage())
                 .get(0)
@@ -219,6 +265,9 @@ public class MainWindowController {
     }
 
     private void showToolbar() {
+        copyButton.setDisable(false);
+        saveAsMenuButton.setDisable(false);
+        saveButton.setDisable(false);
         screenNameField.setVisible(true);
         screenNameField.setManaged(true);
         toolbox.setVisible(true);

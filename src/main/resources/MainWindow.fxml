@@ -28,9 +28,9 @@
               <buttons>
                   <Button fx:id="captureButton" maxWidth="90.0" mnemonicParsing="false" onAction="#captureScreen" prefHeight="24.0" prefWidth="90.0" text="Capture " ButtonBar.buttonData="LEFT" />
                   <Button fx:id="settingsButton" maxWidth="90.0" mnemonicParsing="false" onAction="#openSettings" prefWidth="90.0" />
-                  <Button fx:id="copyButton" cache="true" mnemonicParsing="false" />
-                  <Button fx:id="saveButton" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
-                  <MenuButton fx:id="saveAsMenuButton" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save As">
+                  <Button fx:id="copyButton" cache="true" disable="true" mnemonicParsing="false" />
+                  <Button fx:id="saveButton" disable="true" maxWidth="90.0" mnemonicParsing="false" onAction="#saveToDefault" prefWidth="90.0" text="Save" />
+                  <MenuButton fx:id="saveAsMenuButton" disable="true" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save As">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#saveToLocal" text="Local" />
                       <MenuItem mnemonicParsing="false" onAction="#saveToImgur" text="Upload" />

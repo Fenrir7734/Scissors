@@ -7,11 +7,21 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Screenshot {
+    private String name;
     private final Image image;
+
+    public Screenshot(Image image, String name) {
+        this.image = image;
+        this.name = name;
+    }
 
     public Screenshot(Image image) {
         this.image = image;
+        this.name = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
     }
 
     public Screenshot cropScreenshot(Area area) {
@@ -35,7 +45,7 @@ public class Screenshot {
     public Screenshot canvasSnapshot(Canvas canvas) {
         WritableImage image = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
         canvas.snapshot(null, image);
-        return new Screenshot(image);
+        return new Screenshot(image, this.name);
     }
 
     public Background getScreenshotAsBackground() {
@@ -52,5 +62,13 @@ public class Screenshot {
 
     public Image getImage() {
         return image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
