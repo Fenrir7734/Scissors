@@ -32,8 +32,8 @@
                   <Button fx:id="saveButton" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
                   <MenuButton fx:id="saveAsMenuButton" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save As">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Local" />
-                      <MenuItem mnemonicParsing="false" text="Upload" />
+                      <MenuItem mnemonicParsing="false" onAction="#saveToLocal" text="Local" />
+                      <MenuItem mnemonicParsing="false" onAction="#saveToImgur" text="Upload" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     </items>
                   </MenuButton>

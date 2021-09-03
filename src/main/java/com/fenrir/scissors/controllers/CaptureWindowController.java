@@ -87,7 +87,9 @@ public class CaptureWindowController {
         if(selectedArea.getWidth() > 0 && selectedArea.getWidth() > 0) {
             clearCanvas();
             captureWindow.close();
-            MainWindowController.getInstance().drawScreenshotOnCanvas(screenshot.cropScreenshot(selectedArea));
+            MainWindowController controller = MainWindowController.getInstance();
+            controller.setScreenshot(screenshot.cropScreenshot(selectedArea));
+            MainWindowController.getInstance().drawScreenshotOnCanvas();
         } else {
             drawOverlay();
         }

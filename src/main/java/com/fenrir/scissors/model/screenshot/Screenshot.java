@@ -1,6 +1,7 @@
 package com.fenrir.scissors.model.screenshot;
 
 import com.fenrir.scissors.model.area.Area;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
@@ -29,6 +30,12 @@ public class Screenshot {
             return new Screenshot(image);
         }
         return this;
+    }
+
+    public Screenshot canvasSnapshot(Canvas canvas) {
+        WritableImage image = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+        canvas.snapshot(null, image);
+        return new Screenshot(image);
     }
 
     public Background getScreenshotAsBackground() {

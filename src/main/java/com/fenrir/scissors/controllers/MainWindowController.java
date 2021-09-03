@@ -1,6 +1,7 @@
 package com.fenrir.scissors.controllers;
 
 import com.fenrir.scissors.Scissors;
+import com.fenrir.scissors.model.Properties;
 import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.draw.Tool;
 import com.fenrir.scissors.model.draw.drawtools.EraserTool;
@@ -19,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -26,7 +28,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class MainWindowController {
@@ -55,12 +61,11 @@ public class MainWindowController {
     @FXML private ToggleButton eraserToolButton;
     @FXML private ScrollPane screenshotContainer;
     @FXML private StackPane canvasContainer;
+    private List<MenuItem> favoriteItems;
 
+    private final Properties properties = Properties.getInstance();
     private Tool currentTool;
-
-    public static MainWindowController getInstance() {
-        return instance;
-    }
+    private Screenshot screenshot;
 
     @FXML
     public void initialize() {
@@ -78,7 +83,21 @@ public class MainWindowController {
 
         currentTool = new PencilTool(screenshotCanvas, canvasContainer);
 
+        favoriteItems = new ArrayList<>();
+        properties.getFavoriteList().forEach(f -> {
+            MenuItem item = new MenuItem();
+            item.setText(f.name());
+            item.setId(f.name());
+            item.setOnAction(e -> saveToFavorite(f.path()));
+            favoriteItems.add(item);
+            saveAsMenuButton.getItems().add(item);
+        });
+
         instance = this;
+
+        screenshotCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            screenshot = screenshot.canvasSnapshot(screenshotCanvas);
+        });
     }
 
     @FXML
@@ -89,10 +108,58 @@ public class MainWindowController {
             Stage stage = new Stage();
             stage.setResizable(true);
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            refreshFavorite();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void saveToLocal() {
+
+    }
+
+    @FXML
+    private void saveToImgur() {
+
+    }
+
+    private void saveToFavorite(Path path) {
+
+    }
+
+    private void refreshFavorite() {
+        List<Properties.Favorite> favoriteList = properties.getFavoriteList();
+        List<String> favoriteNameList = favoriteList.stream()
+                .map(Properties.Favorite::name)
+                .collect(Collectors.toList());
+
+        List<MenuItem> toRemove = new ArrayList<>();
+        for(MenuItem item: favoriteItems) {
+            if(!favoriteNameList.contains(item.getId())) {
+                toRemove.add(item);
+            }
+        }
+        favoriteItems.removeAll(toRemove);
+        saveAsMenuButton.getItems().removeAll(toRemove);
+
+        List<String> itemsIDs = favoriteItems.stream()
+                .map(MenuItem::getId)
+                .collect(Collectors.toList());
+
+        List<MenuItem> toAdd = new ArrayList<>();
+        for(Properties.Favorite favorite: favoriteList) {
+            if(!itemsIDs.contains(favorite.name())) {
+                MenuItem item = new MenuItem();
+                item.setText(favorite.name());
+                item.setId(favorite.name());
+                item.setOnAction(e -> saveToFavorite(favorite.path()));
+                toAdd.add(item);
+            }
+        }
+        favoriteItems.addAll(toAdd);
+        saveAsMenuButton.getItems().addAll(toAdd);
     }
 
     @FXML
@@ -113,7 +180,7 @@ public class MainWindowController {
         }
     }
 
-    public void drawScreenshotOnCanvas(Screenshot screenshot) {
+    public void drawScreenshotOnCanvas() {
         Rectangle2D stageScreenBounds = new ScreenDetector()
                 .detectStageScreens(Scissors.getInstance().getStage())
                 .get(0)
@@ -210,4 +277,13 @@ public class MainWindowController {
         currentTool = new ArrowTool(screenshotCanvas, canvasContainer);
         currentTool.enableTool();
     }
+
+    public void setScreenshot(Screenshot screenshot) {
+        this.screenshot = screenshot;
+    }
+
+    public static MainWindowController getInstance() {
+        return instance;
+    }
+
 }
