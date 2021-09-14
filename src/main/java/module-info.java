@@ -1,5 +1,6 @@
 module com.fenrir.scissors {
     requires javafx.controls;
+    requires org.controlsfx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.swing;
