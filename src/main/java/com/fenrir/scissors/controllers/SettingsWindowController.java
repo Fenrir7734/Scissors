@@ -3,7 +3,6 @@ package com.fenrir.scissors.controllers;
 import com.fenrir.scissors.model.Properties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,6 +22,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SettingsWindowController {
+    private SettingsWindowController instance;
+
     @FXML private CheckBox automaticSaveCheckbox;
     @FXML private CheckBox automaticCopyCheckbox;
     @FXML private TextField pathTextField;
@@ -37,6 +38,8 @@ public class SettingsWindowController {
 
     @FXML
     private void initialize() {
+        instance = this;
+
         automaticSaveCheckbox.setSelected(properties.isSaveToDefault());
         automaticCopyCheckbox.setSelected(properties.isSaveToClipboard());
         pathTextField.setText(properties.getDefaultPath().toString());
@@ -57,7 +60,7 @@ public class SettingsWindowController {
     }
 
     @FXML
-    private void changePath(Event event) {
+    private void changePath() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(changePathButton.getScene().getWindow());
 
@@ -68,7 +71,7 @@ public class SettingsWindowController {
     }
 
     @FXML
-    private void addToFavorite(Event event) {
+    private void addToFavorite() {
         try {
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/FavoriteInputWindow.fxml")));
             Scene scene = new Scene(parent);
@@ -130,5 +133,9 @@ public class SettingsWindowController {
                 removeFavoriteFromList(id);
             }
         }
+    }
+
+    public SettingsWindowController getInstance() {
+        return instance;
     }
 }

@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 public class CaptureWindowController {
+    private CaptureWindowController instance;
+
     private final int BORDER_WIDTH;
 
     private Stage captureWindow;
@@ -35,6 +37,8 @@ public class CaptureWindowController {
     private Screenshot screenshot;
 
     public CaptureWindowController() {
+        instance = this;
+
         BORDER_WIDTH = Properties.getInstance().getBorderWidth();
 
         detector = new ScreenDetector();
@@ -59,9 +63,9 @@ public class CaptureWindowController {
         captureWindow.show();
         setFocusScreen();
 
-        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> mousePressedEvent(mouseEvent.getX(), mouseEvent.getY()));
-        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> mouseDraggedEvent(mouseEvent.getX(), mouseEvent.getY()));
-        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> mouseReleasedEvent(mouseEvent.getX(), mouseEvent.getY()));
+        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> handleMousePressed(mouseEvent.getX(), mouseEvent.getY()));
+        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> handleMouseDragged(mouseEvent.getX(), mouseEvent.getY()));
+        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> handleMouseReleased(mouseEvent.getX(), mouseEvent.getY()));
 
         scene.setOnKeyPressed(keyEvent -> {
             screenDetection.stop();
@@ -69,18 +73,18 @@ public class CaptureWindowController {
         });
     }
 
-    private void mousePressedEvent(double x, double y) {
+    private void handleMousePressed(double x, double y) {
         screenDetection.stop();
         selector.setFirstPoint(x, y);
     }
 
-    private void mouseDraggedEvent(double x, double y) {
+    private void handleMouseDragged(double x, double y) {
         selector.setSecondPoint(x, y);
         drawOverlay();
         drawSelectedArea();
     }
 
-    private void mouseReleasedEvent(double x, double y) {
+    private void handleMouseReleased(double x, double y) {
         selector.setSecondPoint(x, y);
         Area selectedArea = selector.getArea();
 
@@ -118,10 +122,30 @@ public class CaptureWindowController {
         captureWindow.setFullScreen(false);
         captureWindow.setFullScreen(true);
 
+        drawScreenBorder();
         drawOverlay();
     }
 
     private void drawOverlay() {
+        GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
+
+        graphicsContext.clearRect(
+                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+        );
+
+        graphicsContext.setFill(Color.rgb(0, 0, 0, Properties.getInstance().getOpacity() / 100.0));
+        graphicsContext.fillRect(
+                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+        );
+    }
+
+    private void drawScreenBorder() {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
         graphicsContext.setFill(javafx.scene.paint.Color.rgb(5, 190, 112));
@@ -133,14 +157,6 @@ public class CaptureWindowController {
         );
 
         graphicsContext.clearRect(
-                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
-                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
-                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
-                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
-        );
-
-        graphicsContext.setFill(Color.rgb(0, 0, 0, Properties.getInstance().getOpacity() / 100.0));
-        graphicsContext.fillRect(
                 graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
                 graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
                 graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
@@ -204,5 +220,9 @@ public class CaptureWindowController {
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    public CaptureWindowController getInstance() {
+        return instance;
     }
 }

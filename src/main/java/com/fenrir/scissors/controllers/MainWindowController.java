@@ -14,6 +14,7 @@ import com.fenrir.scissors.model.draw.shapetools.LineTool;
 import com.fenrir.scissors.model.draw.shapetools.RectangleTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,6 @@ import org.controlsfx.control.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -73,7 +73,6 @@ public class MainWindowController {
     private Tool currentTool;
     private Screenshot screenshot;
     private boolean isToolbar;
-    private SystemTray tray;
 
     @FXML
     public void initialize() {
@@ -100,7 +99,7 @@ public class MainWindowController {
     }
 
     @FXML
-    public void captureScreen(ActionEvent event) {
+    public void captureScreen() {
         Scissors.getInstance().getStage().setIconified(true);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/CaptureWindow.fxml")));
@@ -111,7 +110,15 @@ public class MainWindowController {
             stage.setScene(scene);
             captureWindowController.setStage(stage);
             captureWindowController.setScene(scene);
-            captureWindowController.startCapturing();
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                    Platform.runLater(captureWindowController::startCapturing);
+                } catch (InterruptedException e) {
+                    logger.error(e.getMessage());
+                }
+            }).start();
         } catch (IOException e) {
             logger.error("Error opening the capture window");
             logger.error(e.getMessage());

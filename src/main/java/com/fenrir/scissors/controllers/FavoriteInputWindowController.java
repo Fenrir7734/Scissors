@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FavoriteInputWindowController {
+    private FavoriteInputWindowController instance;
+
     @FXML private TextField nameTextField;
     @FXML private TextField pathTextField;
 
@@ -57,5 +59,9 @@ public class FavoriteInputWindowController {
     @FXML
     private void close() {
         pathTextField.getScene().getWindow().hide();
+    }
+
+    public FavoriteInputWindowController getInstance() {
+        return instance;
     }
 }
