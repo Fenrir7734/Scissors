@@ -10,6 +10,9 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class controls GUI responsible for adding new favorite locations for saving screenshots quickly.
+ */
 public class FavoriteInputWindowController {
     private FavoriteInputWindowController instance;
 
@@ -18,6 +21,9 @@ public class FavoriteInputWindowController {
 
     private final Properties properties = Properties.getInstance();
 
+    /**
+     * Handles the button action to allow choosing destination directory which will be added to Favorite.
+     */
     @FXML
     private void chooseDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -29,6 +35,13 @@ public class FavoriteInputWindowController {
         }
     }
 
+    /**
+     * Handles the button action to add chosen directory to Favorite.
+     *
+     * The directory path and name of Favorite entity, which are taken from Text Fields, cannot be empty and name cannot
+     * duplicate the name of another Favorite entity. If any of these conditions are not met appropriate alert will
+     * be displayed. Otherwise, new Favorite entity will be added.
+     */
     @FXML
     private void add() {
         String name = nameTextField.getText();
@@ -43,6 +56,9 @@ public class FavoriteInputWindowController {
 
             if (!favoritesNames.contains(name)) {
                 properties.addToFavorite(name, path);
+                MainWindowController.getInstance().refreshFavorites();
+                SettingsWindowController.getInstance().refreshFavorite();
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Path added to favorites");
                 alert.showAndWait();
                 close();
@@ -56,11 +72,19 @@ public class FavoriteInputWindowController {
         }
     }
 
+    /**
+     * Handles the button action to close Favorite Input Window GUI.
+     */
     @FXML
     private void close() {
         pathTextField.getScene().getWindow().hide();
     }
 
+    /**
+     * Gets the instance of this controller.
+     *
+     * @return  Instance of this controller.
+     */
     public FavoriteInputWindowController getInstance() {
         return instance;
     }

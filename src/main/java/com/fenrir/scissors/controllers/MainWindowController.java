@@ -14,8 +14,6 @@ import com.fenrir.scissors.model.draw.shapetools.LineTool;
 import com.fenrir.scissors.model.draw.shapetools.RectangleTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -28,10 +26,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
@@ -52,27 +48,22 @@ public class MainWindowController {
 
     private static MainWindowController instance;
 
-    @FXML private AnchorPane mainWindowPane;
-    @FXML private VBox mainWindowVBox;
-    @FXML private ButtonBar mainButtonBar;
-    @FXML private Button captureButton;
-    @FXML private Button settingsButton;
     @FXML private Button copyButton;
     @FXML private Button saveButton;
     @FXML private MenuButton saveAsMenuButton;
-    @FXML private HBox screenNameContainer;
     @FXML private TextField screenNameField;
     @FXML private HBox toolbox;
-    @FXML private ToggleGroup toolboxGroup;
     @FXML private Canvas screenshotCanvas;
     @FXML private ScrollPane screenshotContainer;
     @FXML private StackPane canvasContainer;
+
     private List<MenuItem> favoriteItems;
 
-    private final Properties properties = Properties.getInstance();
     private Tool currentTool;
-    private Screenshot screenshot;
     private boolean isToolbar;
+
+    private final Properties properties = Properties.getInstance();
+    private Screenshot screenshot;
 
     @FXML
     public void initialize() {
@@ -101,10 +92,11 @@ public class MainWindowController {
     @FXML
     public void captureScreen() {
         Scissors.getInstance().getStage().setIconified(true);
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/CaptureWindow.fxml")));
             StackPane pane = fxmlLoader.load();
-            CaptureWindowController captureWindowController = fxmlLoader.getController();
+            ScreenCaptureWindowController captureWindowController = fxmlLoader.getController();
             Stage stage = new Stage();
             Scene scene = new Scene(pane);
             stage.setScene(scene);
@@ -134,7 +126,6 @@ public class MainWindowController {
             stage.setResizable(true);
             stage.setScene(scene);
             stage.showAndWait();
-            refreshFavorites();
         } catch (IOException e) {
             logger.error("Error opening the settings window");
             logger.error(e.getMessage());
@@ -332,7 +323,7 @@ public class MainWindowController {
                 .show();
     }
 
-    private void refreshFavorites() {
+    public void refreshFavorites() {
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();
         List<String> favoriteNameList = favoriteList.stream()
                 .map(Properties.Favorite::name)

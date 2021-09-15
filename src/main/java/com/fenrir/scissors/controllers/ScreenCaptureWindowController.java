@@ -1,5 +1,6 @@
 package com.fenrir.scissors.controllers;
 
+import com.fenrir.scissors.Scissors;
 import com.fenrir.scissors.model.Properties;
 import com.fenrir.scissors.model.ScreenDetector;
 import com.fenrir.scissors.model.area.Area;
@@ -19,24 +20,32 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 
-public class CaptureWindowController {
+/**
+ * This class provides the ability to select and screenshot part of the screen.
+ *
+ * @author Fenrir7734
+ * @version v1.0.0 September 15, 2021
+ */
+public class ScreenCaptureWindowController {
     public final static int BORDER_WIDTH = 2;
 
-    private CaptureWindowController instance;
-
-    private Stage captureWindow;
-    private Scene scene;
+    private ScreenCaptureWindowController instance;
 
     @FXML private StackPane backgroundHolder;
     @FXML private Canvas captureAreaCanvas;
+    private Stage captureWindow;
+    private Scene scene;
 
     private final ScreenDetector detector;
-    private AreaSelector selector;
     private final AnimationTimer screenDetection;
-
+    private AreaSelector selector;
     private Screenshot screenshot;
 
-    public CaptureWindowController() {
+    /**
+     * Creates new instance of Screen Capture Window Controller. Does not start capturing process, it must be done later,
+     * after creating instance of this class by calling {@link #startCapturing()} method.
+     */
+    public ScreenCaptureWindowController() {
         instance = this;
 
         detector = new ScreenDetector();
@@ -45,7 +54,7 @@ public class CaptureWindowController {
         screenDetection = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if(detector.isScreeChange()) {
+                if (detector.isScreeChange()) {
                     setFocusScreen();
                     selector = new AreaSelector(detector.getCurrentScreen().getBounds());
                 }
@@ -53,6 +62,12 @@ public class CaptureWindowController {
         };
     }
 
+    /**
+     * Starts capturing process.
+     *
+     * Starts detection of screen on which the mouse pointer is currently located, sets stage configuration and sets
+     * events handlers.
+     */
     public void startCapturing() {
         screenDetection.start();
 
@@ -60,32 +75,66 @@ public class CaptureWindowController {
         captureWindow.show();
         setFocusScreen();
 
-        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> handleMousePressed(mouseEvent.getX(), mouseEvent.getY()));
-        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEvent -> handleMouseDragged(mouseEvent.getX(), mouseEvent.getY()));
-        captureAreaCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> handleMouseReleased(mouseEvent.getX(), mouseEvent.getY()));
+        captureAreaCanvas.addEventHandler(
+                MouseEvent.MOUSE_PRESSED, mouseEvent -> handleMousePressed(mouseEvent.getX(), mouseEvent.getY())
+        );
+        captureAreaCanvas.addEventHandler(
+                MouseEvent.MOUSE_DRAGGED, mouseEvent -> handleMouseDragged(mouseEvent.getX(), mouseEvent.getY())
+        );
+        captureAreaCanvas.addEventHandler(
+                MouseEvent.MOUSE_RELEASED, mouseEvent -> handleMouseReleased(mouseEvent.getX(), mouseEvent.getY())
+        );
 
         scene.setOnKeyPressed(keyEvent -> {
             screenDetection.stop();
             captureWindow.close();
+            Scissors.getInstance().getStage().setIconified(false);
         });
     }
 
+    /**
+     * Handle mouse pressed event.
+     *
+     * When pressed event occurs, screen detection is stopped and the first point of the selected area for the
+     * screenshot is set.
+     *
+     * @param x Horizontal position of the mouse event
+     * @param y Vertical position of the mouse event
+     */
     private void handleMousePressed(double x, double y) {
         screenDetection.stop();
         selector.setFirstPoint(x, y);
     }
 
+    /**
+     * Handle mouse dragged event.
+     *
+     * When dragged event occurs, a second point of the selected area for the screenshot is set. Based on this point and
+     * point set in {@link #handleMousePressed(double, double)} method, the selected area is drawn on screen.
+     *
+     * @param x Horizontal position of the mouse event
+     * @param y Vertical position of the mouse event
+     */
     private void handleMouseDragged(double x, double y) {
         selector.setSecondPoint(x, y);
         drawOverlay();
         drawSelectedArea();
     }
 
+    /**
+     * Handle mouse released event.
+     *
+     * When released event occurs and selected area field is greater than 0, {@link #captureWindow} stage is closed and
+     * screenshot is cropped according to selected area.
+     *
+     * @param x Horizontal position of the mouse event
+     * @param y Vertical position of the mouse event
+     */
     private void handleMouseReleased(double x, double y) {
         selector.setSecondPoint(x, y);
         Area selectedArea = selector.getArea();
 
-        if(selectedArea.getWidth() > 0 && selectedArea.getWidth() > 0) {
+        if (selectedArea.getWidth() > 0 && selectedArea.getWidth() > 0) {
             clearCanvas();
             captureWindow.close();
             MainWindowController controller = MainWindowController.getInstance();
@@ -95,6 +144,9 @@ public class CaptureWindowController {
         }
     }
 
+    /**
+     * Sets the location of the stage to the appropriate screen according to the mouse pointer location.
+     */
     private void setFocusScreen() {
         Point location = detector.getCurrentScreenLocation();
         int screenWidth = detector.getCurrentScreenWidth();
@@ -121,6 +173,9 @@ public class CaptureWindowController {
         drawOverlay();
     }
 
+    /**
+     * Draws an overlay over entire screen excluding screen borders.
+     */
     private void drawOverlay() {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
@@ -140,6 +195,9 @@ public class CaptureWindowController {
         );
     }
 
+    /**
+     * Draws boundaries surrounding entire screen.
+     */
     private void drawScreenBorder() {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
@@ -159,20 +217,10 @@ public class CaptureWindowController {
         );
     }
 
+    /**
+     * Draws selected area surrounded by boundaries.
+     */
     private void drawSelectedArea() {
-        drawAreaBorder();
-        Area selectedArea = selector.getArea();
-
-        GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
-        graphicsContext.clearRect(
-                selectedArea.getRelativeStartX(),
-                selectedArea.getRelativeStartY(),
-                selectedArea.getWidth(),
-                selectedArea.getHeight()
-        );
-    }
-
-    private void drawAreaBorder() {
         Area selectedArea = selector.getArea();
 
         AreaSelector selector = new AreaSelector(detector.getCurrentScreen().getBounds());
@@ -196,8 +244,18 @@ public class CaptureWindowController {
                 borderArea.getWidth(),
                 borderArea.getHeight()
         );
+
+        graphicsContext.clearRect(
+                selectedArea.getRelativeStartX(),
+                selectedArea.getRelativeStartY(),
+                selectedArea.getWidth(),
+                selectedArea.getHeight()
+        );
     }
 
+    /**
+     * Clears entire canvas.
+     */
     public void clearCanvas() {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
@@ -209,15 +267,30 @@ public class CaptureWindowController {
         );
     }
 
+    /**
+     * Sets the stage used by this controller.
+     *
+     * @param stage Stage used by this controller.
+     */
     public void setStage(Stage stage) {
         captureWindow = stage;
     }
 
+    /**
+     * Sets the scene used by this controller.
+     *
+     * @param scene Scene used by this controller.
+     */
     public void setScene(Scene scene) {
         this.scene = scene;
     }
 
-    public CaptureWindowController getInstance() {
+    /**
+     * Gets the instance of this controller.
+     *
+     * @return  Instance of this controller.
+     */
+    public ScreenCaptureWindowController getInstance() {
         return instance;
     }
 }

@@ -21,8 +21,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * This class controls GUI responsible for program Settings.
+ */
 public class SettingsWindowController {
-    private SettingsWindowController instance;
+    private static SettingsWindowController instance;
 
     @FXML private CheckBox automaticSaveCheckbox;
     @FXML private CheckBox automaticCopyCheckbox;
@@ -30,12 +33,15 @@ public class SettingsWindowController {
     @FXML private Button changePathButton;
     @FXML private Slider opacitySlider;
     @FXML private ListView<HBox> favoriteListView;
-    @FXML private Button addToFavoriteButton;
+
+    private ObservableList<HBox> favoritesViewItems;
 
     private final Properties properties = Properties.getInstance();
     private int opacityValue;
-    private ObservableList<HBox> favoritesViewItems;
 
+    /**
+     * Initializes instance of this class.
+     */
     @FXML
     private void initialize() {
         instance = this;
@@ -49,7 +55,7 @@ public class SettingsWindowController {
         favoritesViewItems = FXCollections.observableArrayList();
 
         for(Properties.Favorite favorite: properties.getFavoriteList()) {
-            addFavoriteToList(favorite);
+            addFavorite(favorite);
         }
         favoriteListView.setItems(favoritesViewItems);
 
@@ -59,8 +65,11 @@ public class SettingsWindowController {
         opacitySlider.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> properties.setOpacity(opacityValue));
     }
 
+    /**
+     * Handle button action to allow choosing default save destination directory.
+     */
     @FXML
-    private void changePath() {
+    private void changeDefaultDirectoryPath() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(changePathButton.getScene().getWindow());
 
@@ -70,8 +79,17 @@ public class SettingsWindowController {
         }
     }
 
+    /**
+     * Handle button action to open Favorite Input Window GUI.
+     */
     @FXML
-    private void addToFavorite() {
+    private void openFavoriteInputWindow() {
+        if(properties.getFavoriteList().size() >= 10) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You can't have more than 10 favorites");
+            alert.showAndWait();
+            return;
+        }
+
         try {
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/FavoriteInputWindow.fxml")));
             Scene scene = new Scene(parent);
@@ -79,17 +97,50 @@ public class SettingsWindowController {
             stage.setResizable(false);
             stage.setScene(scene);
             stage.showAndWait();
-            refreshFavorite();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void addFavoriteToList(Properties.Favorite favorite) {
+    /**
+     * Control that displayed Favorite items are the same as these stored in properties file.
+     */
+    public void refreshFavorite() {
+        List<Properties.Favorite> favoriteList = properties.getFavoriteList();
+        List<String> favoriteItemsIDs = favoritesViewItems.stream()
+                .map(Node::getId)
+                .collect(Collectors.toList());
+
+        for(Properties.Favorite favorite: favoriteList) {
+            if(!favoriteItemsIDs.contains(favorite.name())) {
+                addFavorite(favorite);
+            }
+        }
+
+        List<String> favoriteNamesList = favoriteList.stream()
+                .map(Properties.Favorite::name)
+                .collect(Collectors.toList());
+
+        for(String id: favoriteItemsIDs) {
+            if(!favoriteNamesList.contains(id)) {
+                removeFavorite(id);
+            }
+        }
+    }
+
+    /**
+     * Adds Favorite item to the ListView.
+     *
+     * @param favorite  Favorite entity which will be added to ListView.
+     */
+    private void addFavorite(Properties.Favorite favorite) {
         HBox item = new HBox();
         item.setId(favorite.name());
         Button button = new Button();
-        button.setOnMouseClicked(e -> removeFavoriteFromList(item.getId()));
+        button.setOnMouseClicked(e -> {
+            removeFavorite(item.getId());
+            MainWindowController.getInstance().refreshFavorites();
+        });
 
         item.getChildren().addAll(
                 new Label(favorite.name()),
@@ -101,7 +152,12 @@ public class SettingsWindowController {
         favoriteListView.setItems(favoritesViewItems);
     }
 
-    private void removeFavoriteFromList(String name) {
+    /**
+     * Removes Favorite item from ListView.
+     *
+     * @param name  Name of the Favorite entity which uniquely identifies the ListView item to be removed.
+     */
+    private void removeFavorite(String name) {
         for(HBox item: favoritesViewItems) {
             if(item.getId().equals(name)) {
                 favoritesViewItems.remove(item);
@@ -112,30 +168,12 @@ public class SettingsWindowController {
         favoriteListView.setItems(favoritesViewItems);
     }
 
-    private void refreshFavorite() {
-        List<Properties.Favorite> favoriteList = properties.getFavoriteList();
-        List<String> favoriteItemsIDs = favoritesViewItems.stream()
-                .map(Node::getId)
-                .collect(Collectors.toList());
-
-        for(Properties.Favorite favorite: favoriteList) {
-            if(!favoriteItemsIDs.contains(favorite.name())) {
-                addFavoriteToList(favorite);
-            }
-        }
-
-        List<String> favoriteNamesList = favoriteList.stream()
-                .map(Properties.Favorite::name)
-                .collect(Collectors.toList());
-
-        for(String id: favoriteItemsIDs) {
-            if(!favoriteNamesList.contains(id)) {
-                removeFavoriteFromList(id);
-            }
-        }
-    }
-
-    public SettingsWindowController getInstance() {
+    /**
+     * Gets the instance of this controller.
+     *
+     * @return  Instance of this controller.
+     */
+    public static SettingsWindowController getInstance() {
         return instance;
     }
 }

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.CaptureWindowController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.ScreenCaptureWindowController">
    <children>
       <StackPane fx:id="backgroundHolder" prefHeight="150.0" prefWidth="200.0">
          <children>
