@@ -20,9 +20,9 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 public class CaptureWindowController {
-    private CaptureWindowController instance;
+    public final static int BORDER_WIDTH = 2;
 
-    private final int BORDER_WIDTH;
+    private CaptureWindowController instance;
 
     private Stage captureWindow;
     private Scene scene;
@@ -38,8 +38,6 @@ public class CaptureWindowController {
 
     public CaptureWindowController() {
         instance = this;
-
-        BORDER_WIDTH = Properties.getInstance().getBorderWidth();
 
         detector = new ScreenDetector();
         selector = new AreaSelector(detector.getCurrentScreen().getBounds());
@@ -59,7 +57,6 @@ public class CaptureWindowController {
         screenDetection.start();
 
         captureWindow.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        captureWindow.setFullScreen(true);
         captureWindow.show();
         setFocusScreen();
 
@@ -109,13 +106,11 @@ public class CaptureWindowController {
 
         captureAreaCanvas.setWidth(screenWidth);
         captureAreaCanvas.setHeight(screenHeight);
-
         captureAreaCanvas.setLayoutX(location.x);
         captureAreaCanvas.setLayoutY(location.y);
 
         captureWindow.setWidth(screenWidth);
         captureWindow.setHeight(screenHeight);
-
         captureWindow.setX(location.x);
         captureWindow.setY(location.y);
 
@@ -130,16 +125,16 @@ public class CaptureWindowController {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
         graphicsContext.clearRect(
-                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
-                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                BORDER_WIDTH,
+                BORDER_WIDTH,
                 graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
                 graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
         );
 
         graphicsContext.setFill(Color.rgb(0, 0, 0, Properties.getInstance().getOpacity() / 100.0));
         graphicsContext.fillRect(
-                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
-                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                BORDER_WIDTH,
+                BORDER_WIDTH,
                 graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
                 graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
         );
@@ -148,17 +143,17 @@ public class CaptureWindowController {
     private void drawScreenBorder() {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
-        graphicsContext.setFill(javafx.scene.paint.Color.rgb(5, 190, 112));
+        graphicsContext.setFill(Color.rgb(5, 190, 112));
         graphicsContext.fillRect(
-                graphicsContext.getCanvas().getLayoutX(),
-                graphicsContext.getCanvas().getLayoutY(),
+                0,
+                0,
                 graphicsContext.getCanvas().getWidth(),
                 graphicsContext.getCanvas().getHeight()
         );
 
         graphicsContext.clearRect(
-                graphicsContext.getCanvas().getLayoutX() + BORDER_WIDTH,
-                graphicsContext.getCanvas().getLayoutY() + BORDER_WIDTH,
+                BORDER_WIDTH,
+                BORDER_WIDTH,
                 graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
                 graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
         );
@@ -207,8 +202,8 @@ public class CaptureWindowController {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
         graphicsContext.clearRect(
-                graphicsContext.getCanvas().getLayoutX(),
-                graphicsContext.getCanvas().getLayoutY(),
+                0,
+                0,
                 graphicsContext.getCanvas().getWidth(),
                 graphicsContext.getCanvas().getHeight()
         );
