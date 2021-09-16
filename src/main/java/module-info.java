@@ -12,7 +12,6 @@ module com.fenrir.scissors {
     opens com.fenrir.scissors.controllers to javafx.fxml;
     exports com.fenrir.scissors;
     exports com.fenrir.scissors.model;
-    exports com.fenrir.scissors.test;
     exports com.fenrir.scissors.controllers;
     exports com.fenrir.scissors.model.area;
     exports com.fenrir.scissors.model.screenshot;
