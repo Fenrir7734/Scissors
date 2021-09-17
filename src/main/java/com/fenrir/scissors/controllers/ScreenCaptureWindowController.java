@@ -27,8 +27,6 @@ import java.awt.*;
  * @version v1.0.0 September 15, 2021
  */
 public class ScreenCaptureWindowController {
-    public final static int BORDER_WIDTH = 2;
-
     private ScreenCaptureWindowController instance;
 
     @FXML private StackPane backgroundHolder;
@@ -180,18 +178,18 @@ public class ScreenCaptureWindowController {
         GraphicsContext graphicsContext = captureAreaCanvas.getGraphicsContext2D();
 
         graphicsContext.clearRect(
-                BORDER_WIDTH,
-                BORDER_WIDTH,
-                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
-                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+                Properties.BORDER_WIDTH,
+                Properties.BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (Properties.BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (Properties.BORDER_WIDTH * 2)
         );
 
         graphicsContext.setFill(Color.rgb(0, 0, 0, Properties.getInstance().getOpacity() / 100.0));
         graphicsContext.fillRect(
-                BORDER_WIDTH,
-                BORDER_WIDTH,
-                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
-                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+                Properties.BORDER_WIDTH,
+                Properties.BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (Properties.BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (Properties.BORDER_WIDTH * 2)
         );
     }
 
@@ -210,10 +208,10 @@ public class ScreenCaptureWindowController {
         );
 
         graphicsContext.clearRect(
-                BORDER_WIDTH,
-                BORDER_WIDTH,
-                graphicsContext.getCanvas().getWidth() - (BORDER_WIDTH * 2),
-                graphicsContext.getCanvas().getHeight() - (BORDER_WIDTH * 2)
+                Properties.BORDER_WIDTH,
+                Properties.BORDER_WIDTH,
+                graphicsContext.getCanvas().getWidth() - (Properties.BORDER_WIDTH * 2),
+                graphicsContext.getCanvas().getHeight() - (Properties.BORDER_WIDTH * 2)
         );
     }
 
@@ -225,12 +223,12 @@ public class ScreenCaptureWindowController {
 
         AreaSelector selector = new AreaSelector(detector.getCurrentScreen().getBounds());
         selector.setFirstPoint(
-                (int) selectedArea.getRelativeStartX() - BORDER_WIDTH,
-                (int) selectedArea.getRelativeStartY() - BORDER_WIDTH
+                (int) selectedArea.getRelativeStartX() - Properties.BORDER_WIDTH,
+                (int) selectedArea.getRelativeStartY() - Properties.BORDER_WIDTH
         );
         selector.setSecondPoint(
-                (int) selectedArea.getRelativeEndX() + BORDER_WIDTH,
-                (int) selectedArea.getRelativeEndY() + BORDER_WIDTH
+                (int) selectedArea.getRelativeEndX() + Properties.BORDER_WIDTH,
+                (int) selectedArea.getRelativeEndY() + Properties.BORDER_WIDTH
         );
 
         Area borderArea = selector.getArea();

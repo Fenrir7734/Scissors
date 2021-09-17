@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class controls GUI responsible for adding new favorite locations for saving screenshots quickly.
+ * This class controls GUI responsible for creating and adding new instance of
+ * {@link com.fenrir.scissors.model.Properties.Favorite Favorite} class to the list of favorite saving locations for
+ * saving screenshots quickly.
  */
 public class FavoriteInputWindowController {
     private FavoriteInputWindowController instance;
@@ -22,7 +24,7 @@ public class FavoriteInputWindowController {
     private final Properties properties = Properties.getInstance();
 
     /**
-     * Handles the button action to allow choosing destination directory which will be added to Favorite.
+     * Handles the button action to allow choosing destination directory which will be added to favorite.
      */
     @FXML
     private void chooseDirectory() {
@@ -36,11 +38,12 @@ public class FavoriteInputWindowController {
     }
 
     /**
-     * Handles the button action to add chosen directory to Favorite.
+     * Handles the button action to add chosen directory to favorite.
      *
-     * The directory path and name of Favorite entity, which are taken from Text Fields, cannot be empty and name cannot
-     * duplicate the name of another Favorite entity. If any of these conditions are not met appropriate alert will
-     * be displayed. Otherwise, new Favorite entity will be added.
+     * The directory path and name of {@link com.fenrir.scissors.model.Properties.Favorite Favorite} class instance,
+     * which are taken from Text Fields, cannot be empty and name cannot duplicate the name of another Favorite instance.
+     * If any of these conditions are not met appropriate alert will be displayed. Otherwise, new Favorite instance will
+     * be added to list.
      */
     @FXML
     private void add() {
@@ -56,6 +59,8 @@ public class FavoriteInputWindowController {
 
             if (!favoritesNames.contains(name)) {
                 properties.addToFavorite(name, path);
+                properties.write();
+
                 MainWindowController.getInstance().refreshFavorites();
                 SettingsWindowController.getInstance().refreshFavorite();
 

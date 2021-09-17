@@ -1,1 +1,16 @@
-{"save-to-clipboard":true,"default-path":"/home/fenrir/Documents/Test_environment/screenshot","border-width":2,"save-to-default":false,"opacity":44,"favorite":[{"path":"/home/fenrir/Documents/Test_environment/screenshot/fav","name":"fav"}]}
+{
+    "save-to-clipboard": true,
+    "default-path": "/home/fenrir/Documents/Programming/Scissors/screenshots",
+    "save-to-default": false,
+    "opacity": 70,
+    "favorite": [
+        {
+            "path": "/home/fenrir/Documents/Test_environment/screenshot/fav",
+            "name": "fav1"
+        },
+        {
+            "path": "/home/fenrir/Documents/Programming/Scissors",
+            "name": "fav2"
+        }
+    ]
+}

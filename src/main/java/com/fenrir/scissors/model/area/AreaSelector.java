@@ -4,8 +4,6 @@ import com.fenrir.scissors.model.Properties;
 import javafx.geometry.Rectangle2D;
 
 public class AreaSelector {
-    private final int BORDER_WIDTH;
-
     private final Area area;
     private final double minX;
     private final double minY;
@@ -13,8 +11,6 @@ public class AreaSelector {
     private final double maxY;
 
     public AreaSelector(Rectangle2D areaBounds) {
-        this.BORDER_WIDTH = Properties.getInstance().getBorderWidth();
-
         this.minX = areaBounds.getMinX();
         this.minY = areaBounds.getMinY();
         this.maxX = areaBounds.getMaxX();
@@ -34,19 +30,19 @@ public class AreaSelector {
     }
 
     private double parseX(double x) {
-        if(x + minX < minX + BORDER_WIDTH) {
-            x = BORDER_WIDTH;
-        } else if(x + minX > maxX - BORDER_WIDTH) {
-            x = maxX - minX - BORDER_WIDTH;
+        if(x + minX < minX + Properties.BORDER_WIDTH) {
+            x = Properties.BORDER_WIDTH;
+        } else if(x + minX > maxX - Properties.BORDER_WIDTH) {
+            x = maxX - minX - Properties.BORDER_WIDTH;
         }
         return x;
     }
 
     private double parseY(double y) {
-        if(y + minY < minY + BORDER_WIDTH) {
-            y = BORDER_WIDTH;
-        } else if(y + minY > maxY - BORDER_WIDTH) {
-            y = maxY - minY - BORDER_WIDTH;
+        if(y + minY < minY + Properties.BORDER_WIDTH) {
+            y = Properties.BORDER_WIDTH;
+        } else if(y + minY > maxY - Properties.BORDER_WIDTH) {
+            y = maxY - minY - Properties.BORDER_WIDTH;
         }
         return y;
     }

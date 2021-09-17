@@ -59,10 +59,19 @@ public class SettingsWindowController {
         }
         favoriteListView.setItems(favoritesViewItems);
 
-        automaticSaveCheckbox.selectedProperty().addListener((observableValue, oldValue, newValue) -> properties.setSaveToDefault(newValue));
-        automaticCopyCheckbox.selectedProperty().addListener((observableValue, oldValue, newValue) -> properties.setSaveToClipboard(newValue));
+        automaticSaveCheckbox.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+            properties.setSaveToDefault(newValue);
+            properties.write();
+        });
+        automaticCopyCheckbox.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+            properties.setSaveToClipboard(newValue);
+            properties.write();
+        });
         opacitySlider.valueProperty().addListener((observableValue, oldNumber, newNumber) -> opacityValue = newNumber.intValue());
-        opacitySlider.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> properties.setOpacity(opacityValue));
+        opacitySlider.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            properties.setOpacity(opacityValue);
+            properties.write();
+        });
     }
 
     /**
@@ -75,6 +84,8 @@ public class SettingsWindowController {
 
         if(selectedDirectory != null) {
             properties.setDefaultPath(Path.of(selectedDirectory.getAbsolutePath()));
+            properties.write();
+
             pathTextField.setText(selectedDirectory.getAbsolutePath());
         }
     }
@@ -103,7 +114,7 @@ public class SettingsWindowController {
     }
 
     /**
-     * Control that displayed Favorite items are the same as these stored in properties file.
+     * Control that displayed Favorite items in ListView are the same as these stored in properties file.
      */
     public void refreshFavorite() {
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();
@@ -131,7 +142,8 @@ public class SettingsWindowController {
     /**
      * Adds Favorite item to the ListView.
      *
-     * @param favorite  Favorite entity which will be added to ListView.
+     * @param favorite  {@link com.fenrir.scissors.model.Properties.Favorite Favorite} class instance which content will
+     *                                                                                be added to ListView.
      */
     private void addFavorite(Properties.Favorite favorite) {
         HBox item = new HBox();
@@ -155,7 +167,8 @@ public class SettingsWindowController {
     /**
      * Removes Favorite item from ListView.
      *
-     * @param name  Name of the Favorite entity which uniquely identifies the ListView item to be removed.
+     * @param name  Name of the {@link com.fenrir.scissors.model.Properties.Favorite Favorite} class instance which
+     *              uniquely identifies the ListView item to be removed.
      */
     private void removeFavorite(String name) {
         for(HBox item: favoritesViewItems) {
@@ -165,6 +178,8 @@ public class SettingsWindowController {
             }
         }
         properties.removeFromFavorite(name);
+        properties.write();
+
         favoriteListView.setItems(favoritesViewItems);
     }
 
