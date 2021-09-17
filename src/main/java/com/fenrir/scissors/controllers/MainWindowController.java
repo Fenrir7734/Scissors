@@ -85,7 +85,7 @@ public class MainWindowController {
         screenshotContainer.setFitToHeight(false);
 
         screenshotCanvas.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-            screenshot = screenshot.canvasSnapshot(screenshotCanvas);
+            screenshot = new Screenshot(screenshotCanvas, screenshot.getName());
             if(properties.isSaveToClipboard()) {
                 ScreenshotSaver.copyToClipBoard(screenshot.getImage());
             }
