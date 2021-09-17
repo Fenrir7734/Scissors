@@ -9,10 +9,30 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class Scissors extends Application {
-    public static final double MIN_HEIGHT = 79;
+
+    /**
+     * Minimum primary stage width.
+     */
     public static final double MIN_WIDTH = 600;
+
+    /**
+     * Height of the bar with control buttons.
+     */
+    public static final double CONTROL_BUTTONS_BAR_HEIGHT = 79;
+
+    /**
+     * Height of the toolbar
+     */
     public static final double TOOLBAR_HEIGHT = 74;
+
+    /**
+     * Minimum width of the canvas on which screenshot is drawn.
+     */
     public static final double MIN_CANVAS_WIDTH = 600;
+
+    /**
+     * Minimum height of the canvas on which screenshot is drawn.
+     */
     public static final double MIN_CANVAS_HEIGHT = 400;
 
     public static Scissors scissors;
@@ -28,19 +48,35 @@ public class Scissors extends Application {
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);
-        stage.setHeight(MIN_HEIGHT);
+        stage.setHeight(CONTROL_BUTTONS_BAR_HEIGHT);
         stage.show();
     }
 
+    /**
+     * Sets size of the primary stage.
+     *
+     * @param width width to set for stage.
+     * @param height    height to set for stage.
+     */
     public void setSize(double width, double height) {
         stage.setWidth(width);
         stage.setHeight(height);
     }
 
+    /**
+     * Returns primary stage.
+     *
+     * @return  primary stage.
+     */
     public Stage getStage() {
         return stage;
     }
 
+    /**
+     * Gets the instance of this class.
+     *
+     * @return  Instance of this class.
+     */
     public static Scissors getInstance() {
         return scissors;
     }

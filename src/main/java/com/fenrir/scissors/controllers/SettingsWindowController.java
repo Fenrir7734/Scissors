@@ -114,7 +114,9 @@ public class SettingsWindowController {
     }
 
     /**
-     * Control that displayed Favorite items in ListView are the same as these stored in properties file.
+     * Control that displayed Favorite items placed in ListView are the same as these stored in properties file.
+     *
+     * @see com.fenrir.scissors.model.Properties.Favorite
      */
     public void refreshFavorite() {
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();

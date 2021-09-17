@@ -42,7 +42,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
+/**
+ * This class controls main window of the program.
+ *
+ * @author Fenrir7734
+ * @version v1.0.0 September 17, 2021
+ */
 public class MainWindowController {
     private final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
 
@@ -65,11 +70,14 @@ public class MainWindowController {
     private final Properties properties = Properties.getInstance();
     private Screenshot screenshot;
 
+    /**
+     * Initializes instance of this class.
+     */
     @FXML
     public void initialize() {
         instance = this;
 
-        hideToolbar();
+        hide();
         disableSavingButtons();
         populateFavorites();
 
@@ -89,12 +97,17 @@ public class MainWindowController {
 
     }
 
+    /**
+     * Handle button action to start selecting screen area to screenshot.
+     */
     @FXML
     public void captureScreen() {
         Scissors.getInstance().getStage().setIconified(true);
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/CaptureWindow.fxml")));
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    Objects.requireNonNull(getClass().getResource("/CaptureWindow.fxml"))
+            );
             StackPane pane = fxmlLoader.load();
             ScreenCaptureWindowController captureWindowController = fxmlLoader.getController();
             Stage stage = new Stage();
@@ -103,6 +116,12 @@ public class MainWindowController {
             captureWindowController.setStage(stage);
             captureWindowController.setScene(scene);
 
+            /*
+             Screen capture works that way that it screenshot entire screen and them crop this screenshot according to
+             the selected area. So we run screen capture in different thread so that we can wait until primary
+             stage is iconified before screenshot of entire screen is taken. This way GUI of a program isn't visible
+             on screenshot.
+             */
             new Thread(() -> {
                 try {
                     Thread.sleep(500);
@@ -117,10 +136,15 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Handle button action to open Settings Window GUI.
+     */
     @FXML
     private void openSettings() {
         try {
-            Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/SettingsWindow.fxml")));
+            Parent parent = FXMLLoader.load(
+                    Objects.requireNonNull(getClass().getResource("/SettingsWindow.fxml"))
+            );
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setResizable(true);
@@ -132,11 +156,17 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Handle button action to copy screenshot to clipboard.
+     */
     @FXML
     private void copyToClipboard() {
         ScreenshotSaver.copyToClipBoard(screenshot.getImage());
     }
 
+    /**
+     * Handle button action to save screenshot to default destination directory.
+     */
     @FXML
     private void saveToDefault() {
         try {
@@ -148,6 +178,9 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Handle button action to select destination directory on local machine and save screenshot to selected directory.
+     */
     @FXML
     private void saveToLocal() {
         try {
@@ -165,6 +198,9 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Handle button action to upload screenshot to Imgur.
+     */
     @FXML
     private void saveToImgur() {
         new Thread(() -> {
@@ -184,6 +220,13 @@ public class MainWindowController {
         }).start();
     }
 
+    /**
+     * Handle button action to save screenshot to one of the selected favorite locations.
+     *
+     * @param path  Path to directory.
+     *
+     * @see com.fenrir.scissors.model.Properties.Favorite
+     */
     private void saveToFavorite(Path path) {
         try {
             ScreenshotSaver.saveTo(screenshot.getImage(), path, screenshot.getName());
@@ -194,7 +237,11 @@ public class MainWindowController {
         }
     }
 
-
+    /**
+     * Handle button to enable pencil tool.
+     *
+     * @see PencilTool
+     */
     @FXML
     private void pencilTool() {
         currentTool.disableTool();
@@ -202,6 +249,11 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     * Handle button to enable marker tool.
+     *
+     * @see MarkerTool
+     */
     @FXML
     private void markerTool() {
         currentTool.disableTool();
@@ -209,6 +261,11 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     * Handle button to enable eraser tool.
+     *
+     * @see EraserTool
+     */
     @FXML
     private void eraserTool() {
         currentTool.disableTool();
@@ -216,6 +273,11 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     * Handle button to enable line tool.
+     *
+     * @see LineTool
+     */
     @FXML
     private void lineTool() {
         currentTool.disableTool();
@@ -223,6 +285,11 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     * Handle button to enable rectangle tool.
+     *
+     * @see RectangleTool
+     */
     @FXML
     private void rectangleTool() {
         currentTool.disableTool();
@@ -230,6 +297,11 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     * Handle button to enable ellipse tool.
+     *
+     * @see EllipseTool
+     */
     @FXML
     private void ellipseTool() {
         currentTool.disableTool();
@@ -237,6 +309,11 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     * Handle button to enable arrow tool.
+     *
+     * @see ArrowTool
+     */
     @FXML
     private void arrowTool() {
         currentTool.disableTool();
@@ -244,6 +321,14 @@ public class MainWindowController {
         currentTool.enableTool();
     }
 
+    /**
+     *  Process the {@link Screenshot Screenshot} class instance.
+     *
+     *  If appropriate flags are set in program settings image from Screenshot class instance will be copied to
+     *  clipboard and/or save to default directory. Moreover, image is drawn on canvas for editing.
+     *
+     * @param screenshot    Screenshot to process.
+     */
     public void processScreenshot(Screenshot screenshot) {
         this.screenshot = screenshot;
 
@@ -260,12 +345,15 @@ public class MainWindowController {
         Scissors.getInstance().getStage().setIconified(false);
 
         if(!isToolbar) {
-            showToolbar();
+            show();
             enableSavingButtons();
         }
     }
 
-    private void hideToolbar() {
+    /**
+     * Hides GUI elements that aren't needed before screenshot is taken.
+     */
+    private void hide() {
         isToolbar = false;
         screenNameField.setVisible(false);
         screenNameField.setManaged(false);
@@ -277,7 +365,10 @@ public class MainWindowController {
         screenshotContainer.setManaged(false);
     }
 
-    private void showToolbar() {
+    /**
+     * Shows all primary stage GUI elements which may have been hidden.
+     */
+    private void show() {
         isToolbar = true;
         screenNameField.setVisible(true);
         screenNameField.setManaged(true);
@@ -301,6 +392,12 @@ public class MainWindowController {
         saveButton.setDisable(false);
     }
 
+    /**
+     * Creates MenuItems based on favorite list and add them to MenuButton for quick access to favorite saving
+     * locations.
+     *
+     * @see com.fenrir.scissors.model.Properties.Favorite
+     */
     private void populateFavorites() {
         favoriteItems = new ArrayList<>();
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();
@@ -315,6 +412,9 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Shows notification informing that the screenshot was successfully uploaded to Imgur.
+     */
     private void showUploadNotification() {
         Notifications.create()
                 .title("Scissors")
@@ -323,6 +423,11 @@ public class MainWindowController {
                 .show();
     }
 
+    /**
+     * Control that displayed Favorite items placed in MenuButton are the same as these stored in properties file.
+     *
+     * @see com.fenrir.scissors.model.Properties.Favorite
+     */
     public void refreshFavorites() {
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();
         List<String> favoriteNameList = favoriteList.stream()
@@ -356,7 +461,16 @@ public class MainWindowController {
         saveAsMenuButton.getItems().addAll(toAdd);
     }
 
-    public void drawScreenshot() {
+    /**
+     * Draw screenshot on canvas. Stage is resized accordingly to canvas size but can't be greater than screen size and
+     * lower than minimum size.
+     *
+     * @see Scissors#CONTROL_BUTTONS_BAR_HEIGHT
+     * @see Scissors#MIN_WIDTH
+     * @see Scissors#TOOLBAR_HEIGHT
+     * @see Scissors#MIN_CANVAS_HEIGHT
+     */
+    private void drawScreenshot() {
         Rectangle2D stageScreenBounds = new ScreenDetector()
                 .detectStageScreens(Scissors.getInstance().getStage())
                 .get(0)
@@ -377,7 +491,7 @@ public class MainWindowController {
                 .drawImage(screenshot.getImage(), 0, 0, screenshotWidth, screenshotHeight);
 
         double stageWidth = Math.max(Scissors.MIN_WIDTH, screenshotWidth);
-        double stageHeight = Scissors.MIN_HEIGHT + Scissors.TOOLBAR_HEIGHT + Math.max(screenshotHeight, Scissors.MIN_CANVAS_HEIGHT);
+        double stageHeight = Scissors.CONTROL_BUTTONS_BAR_HEIGHT + Scissors.TOOLBAR_HEIGHT + Math.max(screenshotHeight, Scissors.MIN_CANVAS_HEIGHT);
 
         if (stageWidth > maxWidth) {
             stageWidth = maxWidth;
@@ -392,6 +506,11 @@ public class MainWindowController {
         primaryStage.setHeight(stageHeight);
     }
 
+    /**
+     * Gets the instance of this controller.
+     *
+     * @return  Instance of this controller.
+     */
     public static MainWindowController getInstance() {
         return instance;
     }
