@@ -21,5 +21,8 @@ buildNumber.properties
 # Log file
 *.log
 
+# screenshots directory content
+screenshots/*
+
 # Package Files #
 *.jar
