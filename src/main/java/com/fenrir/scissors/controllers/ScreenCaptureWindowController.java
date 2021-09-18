@@ -52,6 +52,7 @@ public class ScreenCaptureWindowController {
         screenDetection = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                detector.refresh();
                 if (detector.isScreeChange()) {
                     setFocusScreen();
                     selector = new AreaSelector(detector.getCurrentScreen().getBounds());
