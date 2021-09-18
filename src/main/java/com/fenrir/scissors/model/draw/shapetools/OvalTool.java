@@ -5,11 +5,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
-public class EllipseTool extends ShapeTool {
+/**
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
+public class OvalTool extends ShapeTool {
 
-    public EllipseTool(Canvas canvas, StackPane canvasContainer) {
+    public OvalTool(Canvas canvas, StackPane canvasContainer) {
         super(canvas, canvasContainer);
     }
 

@@ -10,7 +10,7 @@ import com.fenrir.scissors.model.draw.drawtools.EraserTool;
 import com.fenrir.scissors.model.draw.drawtools.MarkerTool;
 import com.fenrir.scissors.model.draw.drawtools.PencilTool;
 import com.fenrir.scissors.model.draw.shapetools.ArrowTool;
-import com.fenrir.scissors.model.draw.shapetools.EllipseTool;
+import com.fenrir.scissors.model.draw.shapetools.OvalTool;
 import com.fenrir.scissors.model.draw.shapetools.LineTool;
 import com.fenrir.scissors.model.draw.shapetools.RectangleTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
@@ -117,12 +117,11 @@ public class MainWindowController {
             captureWindowController.setStage(stage);
             captureWindowController.setScene(scene);
 
-            /*
-             Screen capture works that way that it screenshot entire screen and them crop this screenshot according to
-             the selected area. So we run screen capture in different thread so that we can wait until primary
-             stage is iconified before screenshot of entire screen is taken. This way GUI of a program isn't visible
-             on screenshot.
-             */
+
+            // Screen capture works that way that it screenshot entire screen and them crop this screenshot according to
+            // the selected area. So we run screen capture in different thread so that we can wait until primary
+            // stage is iconified before screenshot of entire screen is taken. This way GUI of a program isn't visible
+            // on screenshot.
             new Thread(() -> {
                 try {
                     Thread.sleep(500);
@@ -301,12 +300,12 @@ public class MainWindowController {
     /**
      * Handle button to enable ellipse tool.
      *
-     * @see EllipseTool
+     * @see OvalTool
      */
     @FXML
     private void ellipseTool() {
         currentTool.disableTool();
-        currentTool = new EllipseTool(screenshotCanvas, canvasContainer);
+        currentTool = new OvalTool(screenshotCanvas, canvasContainer);
         currentTool.enableTool();
     }
 

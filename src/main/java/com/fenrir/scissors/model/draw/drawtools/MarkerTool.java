@@ -7,6 +7,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
 public class MarkerTool extends DrawTool {
 
     public MarkerTool(Canvas canvas, StackPane canvasContainer) {

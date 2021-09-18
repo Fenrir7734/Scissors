@@ -6,6 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
+/**
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
 public abstract class DrawTool extends Tool {
 
     public DrawTool(Canvas canvas, StackPane canvasContainer) {

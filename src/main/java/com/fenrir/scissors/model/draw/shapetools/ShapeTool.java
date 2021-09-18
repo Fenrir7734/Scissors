@@ -9,6 +9,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
+/**
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
 public abstract class ShapeTool extends Tool {
     protected Canvas layer = new Canvas();
     protected Pair<Double, Double> startPoint;

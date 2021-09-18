@@ -15,6 +15,9 @@ import java.util.List;
 
 /**
  * Class that holds program properties.
+ *
+ * @author Fenrir7734
+ * @version v1.0.0 September 16, 2021
  */
 public class Properties {
     public final static int BORDER_WIDTH = 2;

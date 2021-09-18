@@ -6,6 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
+/**
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
 public class EraserTool extends Tool {
 
     public EraserTool(Canvas canvas, StackPane canvasContainer) {

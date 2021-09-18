@@ -1,14 +1,15 @@
 package com.fenrir.scissors.model.draw.shapetools;
 
-import com.fenrir.scissors.model.draw.Tool;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 
+/**
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
 public class LineTool extends ShapeTool {
 
     public LineTool(Canvas canvas, StackPane canvasContainer) {
