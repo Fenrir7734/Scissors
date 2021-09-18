@@ -12,6 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * Helper class to save screenshots on local machine.
+ *
+ * @author Fenrir7734
+ * @version v1.0.0 September 18, 2021
+ */
 public class ScreenshotSaver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScreenshotSaver.class);
 
@@ -19,6 +25,11 @@ public class ScreenshotSaver {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Copies image to the system clipboard.
+     *
+     * @param image Image to be copied to the clipboard.
+     */
     public static void copyToClipBoard(Image image) {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
@@ -26,6 +37,11 @@ public class ScreenshotSaver {
         clipboard.setContent(content);
     }
 
+    /**
+     * Copies string to the system clipboard.
+     *
+     * @param string    String to be copied to the clipboard.
+     */
     public static void copyToClipBoard(String string) {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
@@ -33,6 +49,15 @@ public class ScreenshotSaver {
         clipboard.setContent(content);
     }
 
+
+    /**
+     * Saves image as a .png file format to the given File.
+     *
+     * @param image         Image to be saved.
+     * @param file          File to be written to.
+     *
+     * @throws IOException  If an error occurs during writing.
+     */
     public static void saveTo(Image image, File file) throws IOException  {
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
@@ -42,12 +67,18 @@ public class ScreenshotSaver {
         }
     }
 
+    /**
+     * Saves image as a .png file format to the given directory. Creates a new File in the given directory and writes to
+     * it.
+     *
+     * @param image         Image to be saved.
+     * @param dirPath       Directory where image will be saved.
+     * @param name          Name of file to be written to.
+     *
+     * @throws IOException  If an error occurs during writing.
+     */
     public static void saveTo(Image image, Path dirPath, String name) throws IOException {
         Path path = dirPath.resolve(Path.of(name));
         saveTo(image, new File(path.toString()));
-    }
-
-    public static String saveToImgur(Image image) throws IOException {
-        return ImgurUploader.upload(SwingFXUtils.fromFXImage(image, null));
     }
 }

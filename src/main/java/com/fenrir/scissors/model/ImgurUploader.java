@@ -1,5 +1,7 @@
 package com.fenrir.scissors.model;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +21,17 @@ public class ImgurUploader {
     private static final String UPLOAD_URL = "https://api.imgur.com/3/image";
     private static final String CLIENT_ID = "f56ba7718f727fe";
 
-    static public String upload(BufferedImage image) throws IOException {
+    static public String upload(Image image) throws IOException {
         HttpURLConnection connection = getConnection();
         writeToConnection(connection, toBase64(image));
         return getUploadUrl(connection);
     }
 
-    static private String toBase64(BufferedImage image) throws IOException {
+    static private String toBase64(Image image) throws IOException {
         try {
+            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);
+            ImageIO.write(bufferedImage, "png", baos);
             byte[] bytes = baos.toByteArray();
             return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {

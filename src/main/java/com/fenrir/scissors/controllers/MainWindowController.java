@@ -1,6 +1,7 @@
 package com.fenrir.scissors.controllers;
 
 import com.fenrir.scissors.Scissors;
+import com.fenrir.scissors.model.ImgurUploader;
 import com.fenrir.scissors.model.Properties;
 import com.fenrir.scissors.model.ScreenshotSaver;
 import com.fenrir.scissors.model.ScreenDetector;
@@ -205,7 +206,7 @@ public class MainWindowController {
     private void saveToImgur() {
         new Thread(() -> {
             try {
-                String url = ScreenshotSaver.saveToImgur(screenshot.getImage());
+                String url = ImgurUploader.upload(screenshot.getImage());
                 Platform.runLater(() -> {
                     ScreenshotSaver.copyToClipBoard(url);
                     showUploadNotification();
