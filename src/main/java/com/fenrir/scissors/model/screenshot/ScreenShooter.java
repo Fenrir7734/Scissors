@@ -14,6 +14,10 @@ import javafx.stage.Screen;
  */
 public class ScreenShooter {
 
+    private ScreenShooter() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Takes screenshot of the given rectangular area relative to the primary screen.
      *
