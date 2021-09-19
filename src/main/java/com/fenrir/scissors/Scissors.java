@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * @author Fenrir7734
+ * @version v1.0.1 September 17, 2021
+ */
 public class Scissors extends Application {
 
     /**
@@ -35,13 +39,13 @@ public class Scissors extends Application {
      */
     public static final double MIN_CANVAS_HEIGHT = 400;
 
-    public static Scissors scissors;
+    private static Scissors instance;
 
     private Stage stage;
 
     @Override
     public void start(Stage stage) throws Exception {
-        scissors = this;
+        instance = this;
 
         this.stage = stage;
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("MainWindow.fxml")));
@@ -78,7 +82,7 @@ public class Scissors extends Application {
      * @return  Instance of this class.
      */
     public static Scissors getInstance() {
-        return scissors;
+        return instance;
     }
 
     public static void main(String[] args) {

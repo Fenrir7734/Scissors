@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * This class controls main window of the program.
  *
  * @author Fenrir7734
- * @version v1.0.0 September 17, 2021
+ * @version v1.0.1 September 17, 2021
  */
 public class MainWindowController {
     private final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
@@ -186,7 +186,7 @@ public class MainWindowController {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(new File("."));
-            File selectedFile = fileChooser.showSaveDialog(Scissors.scissors.getStage());
+            File selectedFile = fileChooser.showSaveDialog(Scissors.getInstance().getStage());
 
             if (selectedFile != null) {
                 ScreenshotSaver.saveTo(screenshot.getImage(), selectedFile);
