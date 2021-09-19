@@ -96,10 +96,10 @@ public class ScreenDetector {
     }
 
     /**
-     * Gets Point that marks the bottom left corner of the screen where mouse pointer was located during last refresh.
-     * Point location is relative to the bottom left corner of the primary screen.
+     * Gets origin point of the screen where mouse pointer was located during last refresh.
+     * Point location is relative to the origin point of the primary screen.
      *
-     * @return  Point that marks the bottom left corner of the screen.
+     * @return  Point that marks the origin point of the screen.
      */
     public Point getCurrentScreenLocation() {
         Rectangle2D rectangle2D = currentScreen.getBounds();
