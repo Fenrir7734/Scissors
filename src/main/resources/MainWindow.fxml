@@ -27,19 +27,19 @@
          <children>
             <ButtonBar fx:id="mainButtonBar" buttonMinWidth="24.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                  <Button fx:id="captureButton" maxWidth="90.0" mnemonicParsing="false" onAction="#captureScreen" prefHeight="24.0" prefWidth="90.0" text="Capture " ButtonBar.buttonData="LEFT" />
-                  <Button fx:id="settingsButton" maxWidth="90.0" mnemonicParsing="false" onAction="#openSettings" prefWidth="90.0" >
+                  <Button fx:id="captureButton" styleClass="btn" maxWidth="90.0" mnemonicParsing="false" onAction="#captureScreen" prefHeight="24.0" prefWidth="90.0" text="Capture " ButtonBar.buttonData="LEFT" />
+                  <Button fx:id="settingsButton" styleClass="btn, btn-icon" maxWidth="90.0" mnemonicParsing="false" onAction="#openSettings" prefWidth="90.0" >
                       <graphic>
                         <Region fx:id="settingsButtonIcon" styleClass="icon"/>
                       </graphic>
                   </Button>
-                  <Button fx:id="copyButton" cache="true" disable="true" mnemonicParsing="false" onAction="#copyToClipboard">
+                  <Button fx:id="copyButton" styleClass="btn, btn-icon" cache="true" disable="true" mnemonicParsing="false" onAction="#copyToClipboard">
                       <graphic>
                           <Region fx:id="copyButtonIcon" styleClass="icon"/>
                       </graphic>
                   </Button>
-                  <Button fx:id="saveButton" disable="true" maxWidth="90.0" mnemonicParsing="false" onAction="#saveToDefault" prefWidth="90.0" text="Save" />
-                  <MenuButton fx:id="saveAsMenuButton" disable="true" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save As">
+                  <Button fx:id="saveButton" styleClass="btn" disable="true" maxWidth="90.0" mnemonicParsing="false" onAction="#saveToDefault" prefWidth="90.0" text="Save" />
+                  <MenuButton fx:id="saveAsMenuButton" styleClass="btn" disable="true" maxWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save As">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#saveToLocal" text="Local" />
                       <MenuItem mnemonicParsing="false" onAction="#saveToImgur" text="Upload" />
@@ -56,7 +56,7 @@
                 </TextField>
             </HBox>
             <HBox fx:id="toolbox">
-               <ToggleButton fx:id="pencilToolButton" mnemonicParsing="false" onAction="#pencilTool" text="ToggleButton">
+               <ToggleButton fx:id="pencilToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#pencilTool" text="ToggleButton">
                   <toggleGroup>
                      <ToggleGroup fx:id="toolboxGroup" />
                   </toggleGroup>
@@ -64,32 +64,32 @@
                        <Region fx:id="pencilToolButtonIcon" styleClass="icon"/>
                    </graphic>
                </ToggleButton>
-                <ToggleButton fx:id="markerToolButton" mnemonicParsing="false" onAction="#markerTool" text="ToggleButton" toggleGroup="$toolboxGroup">
+                <ToggleButton fx:id="markerToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#markerTool" text="ToggleButton" toggleGroup="$toolboxGroup">
                     <graphic>
                         <Region fx:id="markerToolButtonIcon" styleClass="icon"/>
                     </graphic>
                 </ToggleButton>
-               <ToggleButton fx:id="lineToolButton" mnemonicParsing="false" onAction="#lineTool" text="ToggleButton" toggleGroup="$toolboxGroup">
+               <ToggleButton fx:id="lineToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#lineTool" text="ToggleButton" toggleGroup="$toolboxGroup">
                    <graphic>
                        <Region fx:id="lineToolButtonIcon" styleClass="icon"/>
                    </graphic>
                </ToggleButton>
-                <ToggleButton fx:id="arrowToolButton" mnemonicParsing="false" onAction="#arrowTool" text="ToggleButton" toggleGroup="$toolboxGroup">
+                <ToggleButton fx:id="arrowToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#arrowTool" text="ToggleButton" toggleGroup="$toolboxGroup">
                     <graphic>
                         <Region fx:id="arrowToolButtonIcon" styleClass="icon"/>
                     </graphic>
                 </ToggleButton>
-               <ToggleButton fx:id="rectangleToolButton" mnemonicParsing="false" onAction="#rectangleTool" text="ToggleButton" toggleGroup="$toolboxGroup">
+               <ToggleButton fx:id="rectangleToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#rectangleTool" text="ToggleButton" toggleGroup="$toolboxGroup">
                    <graphic>
                        <Region fx:id="rectangleToolButtonIcon" styleClass="icon"/>
                    </graphic>
                </ToggleButton>
-               <ToggleButton fx:id="ovalToolButton" mnemonicParsing="false" onAction="#ellipseTool" text="ToggleButton" toggleGroup="$toolboxGroup">
+               <ToggleButton fx:id="ovalToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#ellipseTool" text="ToggleButton" toggleGroup="$toolboxGroup">
                    <graphic>
                        <Region fx:id="ovalToolButtonIcon" styleClass="icon"/>
                    </graphic>
                </ToggleButton>
-                <ToggleButton fx:id="eraserToolButton" mnemonicParsing="false" onAction="#eraserTool" text="ToggleButton" toggleGroup="$toolboxGroup">
+                <ToggleButton fx:id="eraserToolButton" styleClass="btn, btn-icon" mnemonicParsing="false" onAction="#eraserTool" text="ToggleButton" toggleGroup="$toolboxGroup">
                     <graphic>
                         <Region fx:id="eraserToolButtonIcon" styleClass="icon"/>
                     </graphic>

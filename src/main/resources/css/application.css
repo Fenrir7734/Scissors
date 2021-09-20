@@ -1,13 +1,13 @@
 * {
-    -fx-white-color: #eceff4;
-    -fx-black-color: #2e3440;
-    -fx-green-color: #05be70;
-    -fx-dark-green-color: #049a5b;
+    white-color: #eceff4;
+    black-color: #2e3440;
+    green-color: #05be70;
+    dark-green-color: #049a5b;
 
     icon-size: 24px;
 
     /*
-    icons
+        svg paths
      */
     gear-icon: "M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z";
     copy-icon: "M168.506,0H80.235C67.413,0,56.981,10.432,56.981,23.254v2.854h-15.38 c-12.822,0-23.254,10.432-23.254,23.254v137.492c0,12.822,10.432,23.254,23.254,23.254h88.271 c12.822,0,23.253-10.432,23.253-23.254V184h15.38c12.822,0,23.254-10.432,23.254-23.254V23.254C191.76,10.432,181.328,0,168.506,0z M138.126,186.854c0,4.551-3.703,8.254-8.253,8.254H41.601c-4.551,0-8.254-3.703-8.254-8.254V49.361 c0-4.551,3.703-8.254,8.254-8.254h88.271c4.551,0,8.253,3.703,8.253,8.254V186.854z M176.76,160.746 c0,4.551-3.703,8.254-8.254,8.254h-15.38V49.361c0-12.822-10.432-23.254-23.253-23.254H71.981v-2.854 c0-4.551,3.703-8.254,8.254-8.254h88.271c4.551,0,8.254,3.703,8.254,8.254V160.746z";
@@ -21,81 +21,56 @@
 }
 
 .root {
-    -fx-background-color: -fx-black-color;
-    -fx-text-fill: -fx-white-color;
-}
-
-#mainWindowPane {
-    -fx-padding: 0;
-}
-
-.button,
-.menu-button {
-    -fx-pref-height: 30;
-    -fx-max-height: -fx-pref-height;
-    -fx-min-height: -fx-pref-height;
-    -fx-pref-width: 90px;
-    -fx-max-width: -fx-pref-width;
-    -fx-min-width: -fx-pref-width;
-}
-
-.context-menu {
-    -fx-pref-width: inherit;
-}
-
-.button,
-.menu-button,
-.menu-item,
-.context-menu,
-#toolbox .toggle-button {
-    -fx-background-color: -fx-green-color;
-    -fx-text-fill: -fx-white-color;
-}
-
-.check-box {
-    -fx-text-fill: -fx-white-color;
+    -fx-background-color: black-color;
+    -fx-text-fill: white-color;
 }
 
 .label {
-    -fx-text-fill: -fx-white-color;
+    -fx-text-fill: white-color;
+}
+/*
+    General
+ */
+
+/*
+    Buttons
+ */
+
+.btn,
+.menu-item {
+    -fx-pref-height: 30;
+    -fx-max-height: -fx-pref-height;
+    -fx-min-height: -fx-pref-height;
+    -fx-pref-width: 90;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-width: -fx-pref-width;
+    -fx-background-color: green-color;
+    -fx-text-fill: white-color;
 }
 
-.button-bar,
-#toolbox {
-    -fx-padding: 10px 20px;
-    -fx-pref-height: 50;
-}
-
-#toolbox,
-#screenNameContainer {
-    -fx-alignment: center;
-}
-
-#screenNameField {
-    -fx-background-radius: 50px;
-    -fx-border-radius: 50;
-}
-
-#toolbox {
-    -fx-spacing: 10;
-}
-
-.button:hover,
-.menu-button:hover,
-.menu-item:hover,
-.menu-item:hover,
-#toolbox .toggle-button:hover,
-#toolbox .toggle-button:selected {
-    -fx-background-color: -fx-dark-green-color;
+.btn:hover {
+    -fx-background-color: dark-green-color;
     -fx-cursor: hand;
 }
 
-#copyButton,
-#settingsButton,
-#toolbox .toggle-button {
+.btn-icon {
     -fx-pref-width: 30;
     -fx-max-width: -fx-pref-width;
     -fx-min-width: -fx-pref-width;
+    -fx-pref-height: 30;
+    -fx-max-height: -fx-pref-height;
+    -fx-min-height: -fx-pref-height;
+}
+
+
+/*
+================================================
+    Main Window
+================================================
+ */
+
+#mainWindowPane {
+    -fx-padding: 0;
 }
 
 #settingsButton {
@@ -107,57 +82,49 @@
     -fx-background-color: #3b4252;
 }
 
-#settingsPane {
-    -fx-pref-height: 400;
-    -fx-max-height: -fx-pref-height;
-    -fx-min-height: -fx-pref-height;
-    -fx-pref-width: 300;
-    -fx-max-width: -fx-pref-width;
-    -fx-min-width: -fx-pref-width;
+.context-menu {
+    -fx-pref-width: inherit;
+    -fx-background-color: green-color;
 }
 
-#generalSettingsPane {
-    -fx-spacing: 20;
+.menu-item:hover {
+    -fx-background-color: dark-green-color;
+    -fx-cursor: hand;
 }
 
-#checkBoxContainer,
-#savePathContainer,
-#opacityContainer {
-    -fx-spacing: 10;
-    -fx-padding: 0 10;
+#toolbox .btn {
+    -fx-padding: 3 3 3 3;
 }
 
-#checkBoxContainer {
-    -fx-padding: 20 10 20 10;
+.button-bar,
+#toolbox {
+    -fx-pref-height: 50;
+    -fx-padding: 10px 20px;
+    -fx-spacing: 10px;
 }
 
-#savePathContainer,
-#opacityContainer {
-    -fx-pref-height: 80;
-    -fx-max-height: -fx-pref-height;
-    -fx-min-height: -fx-pref-height;
+#toolbox,
+#screenNameContainer {
+    -fx-alignment: center;
 }
 
-#savePathPane {
-    -fx-spacing: 10;
+#screenNameField {
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
 }
 
-#savePathPane .text-field,
-#savePathPane .button {
-    -fx-pref-height: 30;
-    -fx-max-height: -fx-pref-height;
-    -fx-min-height: -fx-pref-height;
-}
+/*
+================================================
+    Main Window
+================================================
+ */
 
-#addToFavoriteButton {
-    -fx-pref-width: 300;
-    -fx-max-width: -fx-pref-width;
-    -fx-min-width: -fx-pref-width;
-}
-
+/*
+    icons
+ */
 
 .icon {
-    -fx-background-color: -fx-white-color;
+    -fx-background-color: white-color;
     -fx-min-height: icon-size;
     -fx-min-width: icon-size;
     -fx-max-width: icon-size;
