@@ -73,26 +73,26 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0" styleClass="container-about">
                            <children>
-                              <Label text="Author" styleClass="header"/>
+                              <Label styleClass="header" text="Author" />
                               <Label text="Fenrir7734" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0" styleClass="container-about">
                            <children>
-                              <Label text="License" styleClass="header"/>
+                              <Label styleClass="header" text="License" />
                               <Label text="MIT" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0" styleClass="container-about">
                            <children>
-                              <Label text="Attribution" styleClass="header"/>
+                              <Label styleClass="header" text="Attribution" />
                               <Label text="Icons made by:" />
                               <Label text="Freepik:" />
-                              <Hyperlink text="https://www.freepik.com" />
+                              <Hyperlink onAction="#openHyperlink" text="https://www.freepik.com" />
                               <Label text="Lyolya:" />
-                              <Hyperlink text="Hyperlink" />
+                              <Hyperlink onAction="#openHyperlink" text="https://www.flaticon.com/authors/lyolya" />
                               <Label text="Icongeek26" />
-                              <Hyperlink text="https://www.flaticon.com/authors/icongeek26" />
+                              <Hyperlink onAction="#openHyperlink" text="https://www.flaticon.com/authors/icongeek26" />
                               <HBox prefHeight="100.0" prefWidth="200.0" />
                               <HBox prefHeight="100.0" prefWidth="200.0" />
                               <HBox prefHeight="100.0" prefWidth="200.0" />

@@ -1,15 +1,15 @@
 {
-    "save-to-clipboard": true,
+    "save-to-clipboard": false,
     "default-path": "/home/fenrir/Documents/Programming/Scissors/screenshots",
     "save-to-default": false,
-    "opacity": 70,
+    "opacity": 34,
     "favorite": [
         {
-            "path": "/home/fenrir/Documents/Test_environment/screenshot/fav",
-            "name": "fav1"
+            "path": "/home/fenrir/Documents/Programming/Scissors",
+            "name": "fav"
         },
         {
-            "path": "/home/fenrir/Documents/Programming/Scissors",
+            "path": "/home/fenrir/Documents/Programming/Scissors/src/test/java",
             "name": "fav2"
         }
     ]

@@ -7,25 +7,24 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="150.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.FavoriteInputWindowController">
+<AnchorPane prefHeight="122.0" prefWidth="361.0" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fenrir.scissors.controllers.FavoriteInputWindowController">
    <children>
-      <VBox alignment="CENTER">
+      <VBox fx:id="favoriteInputPane" alignment="CENTER">
          <children>
-            <HBox>
+            <HBox styleClass="fav-section">
                <children>
                   <Label text="Name:" />
                   <TextField fx:id="nameTextField" />
                </children>
             </HBox>
-            <HBox>
+            <HBox styleClass="fav-section">
                <children>
                   <Label text="Path:" />
                   <TextField fx:id="pathTextField" editable="false" />
                   <Button mnemonicParsing="false" onAction="#chooseDirectory" text="Choose" />
                </children>
             </HBox>
-            <HBox>
+            <HBox fx:id="buttonContainer" styleClass="fav-section">
                <children>
                   <Button mnemonicParsing="false" onAction="#add" text="Add" />
                   <Button mnemonicParsing="false" onAction="#close" text="Cancel" />
