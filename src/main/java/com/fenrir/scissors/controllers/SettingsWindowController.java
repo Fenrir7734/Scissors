@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
 
 /**
  * This class controls GUI responsible for program Settings.
+ *
+ * @author Fenrir7734
+ * @version v1.0.1 September 15, 2021
  */
 public class SettingsWindowController {
     private static SettingsWindowController instance;
