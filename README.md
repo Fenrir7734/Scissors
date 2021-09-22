@@ -15,3 +15,6 @@ Icons made by [Lyolya](https://www.flaticon.com/authors/lyolya) from [www.flatic
 
 Icons made by [Icongeek26](https://www.flaticon.com/authors/icongeek26) from [www.flaticon.com](https://www.flaticon.com/)  
 ![Eraser](./icons/pen-black.png) ![Eraser](./icons/pen-white.png)  
+
+Icons made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) from [www.flaticon.com](https://www.flaticon.com/)  
+![Close](./icons/close-black.png) ![Close](./icons/close-white.png)  
