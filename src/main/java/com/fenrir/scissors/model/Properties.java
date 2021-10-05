@@ -23,7 +23,6 @@ public class Properties {
     public final static int BORDER_WIDTH = 2;
     public static final String DEFAULT_SCREENSHOT_DIRECTORY_PATH =
             Path.of(System.getProperty("user.dir")).resolve("screenshots").toString();
-
     private static Properties instance = null;
 
     private final JSONObject propertiesFileContent;
@@ -33,6 +32,7 @@ public class Properties {
     private Path defaultPath;
     private int opacity;
     private final List<Favorite> favoriteList;
+    private final boolean isWindows;
 
     /**
      * Class that represents named path to directory. It is used to store the path to the directory, which user adds for
@@ -64,6 +64,8 @@ public class Properties {
                     Path.of(favorite.getString("path"))
             ));
         }
+
+        isWindows = determineSystem();
     }
 
     /**
@@ -76,6 +78,11 @@ public class Properties {
             instance = new Properties();
         }
         return instance;
+    }
+
+    private boolean determineSystem() {
+        String osName = System.getProperty("os.name");
+        return osName.startsWith("Windows");
     }
 
     /**
@@ -169,6 +176,10 @@ public class Properties {
      */
     public void addToFavorite(String name, String path) {
         favoriteList.add(new Favorite(name, Path.of(path)));
+    }
+
+    public boolean isWindows() {
+        return isWindows;
     }
 
     /**

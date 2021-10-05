@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -165,11 +166,17 @@ public class ScreenCaptureWindowController {
         captureWindow.setX(location.x);
         captureWindow.setY(location.y);
 
-        captureWindow.setFullScreen(false);
-        captureWindow.setFullScreen(true);
-
+        refreshFullscreen();
         drawScreenBorder();
         drawOverlay();
+    }
+
+    private void refreshFullscreen() {
+        Properties properties = Properties.getInstance();
+        if(!properties.isWindows()) {
+            captureWindow.setFullScreen(false);
+            captureWindow.setFullScreen(true);
+        }
     }
 
     /**
