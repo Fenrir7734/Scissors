@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -28,8 +27,6 @@ import java.awt.*;
  * @version v1.0.0 September 15, 2021
  */
 public class ScreenCaptureWindowController {
-    private ScreenCaptureWindowController instance;
-
     @FXML private StackPane backgroundHolder;
     @FXML private Canvas captureAreaCanvas;
     private Stage captureWindow;
@@ -45,7 +42,7 @@ public class ScreenCaptureWindowController {
      * after creating instance of this class by calling {@link #startCapturing()} method.
      */
     public ScreenCaptureWindowController() {
-        instance = this;
+        ControllerMediatorImpl.getInstance().registerScreenCaptureWindowController(this);
 
         detector = new ScreenDetector();
         selector = new AreaSelector(detector.getCurrentScreen().getBounds());
@@ -137,8 +134,8 @@ public class ScreenCaptureWindowController {
         if (selectedArea.getWidth() > 0 && selectedArea.getWidth() > 0) {
             clearCanvas();
             captureWindow.close();
-            MainWindowController controller = MainWindowController.getInstance();
-            controller.processScreenshot(screenshot.cropScreenshot(selectedArea));
+            Screenshot croppedScreenshot = screenshot.cropScreenshot(selectedArea);
+            ControllerMediatorImpl.getInstance().receiveScreenshot(croppedScreenshot);
         } else {
             drawOverlay();
         }
@@ -289,14 +286,5 @@ public class ScreenCaptureWindowController {
      */
     public void setScene(Scene scene) {
         this.scene = scene;
-    }
-
-    /**
-     * Gets the instance of this controller.
-     *
-     * @return  Instance of this controller.
-     */
-    public ScreenCaptureWindowController getInstance() {
-        return instance;
     }
 }

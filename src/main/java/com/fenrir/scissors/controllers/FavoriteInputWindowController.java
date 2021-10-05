@@ -16,12 +16,15 @@ import java.util.stream.Collectors;
  * saving screenshots quickly.
  */
 public class FavoriteInputWindowController {
-    private FavoriteInputWindowController instance;
-
     @FXML private TextField nameTextField;
     @FXML private TextField pathTextField;
 
     private final Properties properties = Properties.getInstance();
+
+    @FXML
+    private void initialize() {
+        ControllerMediatorImpl.getInstance().registerFavoriteInputWindowController(this);
+    }
 
     /**
      * Handles the button action to allow choosing destination directory which will be added to favorite.
@@ -61,8 +64,7 @@ public class FavoriteInputWindowController {
                 properties.addToFavorite(name, path);
                 properties.write();
 
-                MainWindowController.getInstance().refreshFavorites();
-                SettingsWindowController.getInstance().refreshFavorite();
+                ControllerMediatorImpl.getInstance().receiveFavoriteList();
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Path added to favorites");
                 alert.showAndWait();
@@ -83,14 +85,5 @@ public class FavoriteInputWindowController {
     @FXML
     private void close() {
         pathTextField.getScene().getWindow().hide();
-    }
-
-    /**
-     * Gets the instance of this controller.
-     *
-     * @return  Instance of this controller.
-     */
-    public FavoriteInputWindowController getInstance() {
-        return instance;
     }
 }

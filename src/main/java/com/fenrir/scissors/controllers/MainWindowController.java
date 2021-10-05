@@ -52,8 +52,6 @@ import java.util.stream.Collectors;
 public class MainWindowController {
     private final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
 
-    private static MainWindowController instance;
-
     @FXML private Button copyButton;
     @FXML private Button saveButton;
     @FXML private MenuButton saveAsMenuButton;
@@ -76,7 +74,7 @@ public class MainWindowController {
      */
     @FXML
     public void initialize() {
-        instance = this;
+        ControllerMediatorImpl.getInstance().registerMainWindowController(this);
 
         hide();
         disableSavingButtons();
@@ -329,7 +327,7 @@ public class MainWindowController {
      *
      * @param screenshot    Screenshot to process.
      */
-    public void processScreenshot(Screenshot screenshot) {
+    public void receiveScreenshot(Screenshot screenshot) {
         this.screenshot = screenshot;
 
         if(properties.isSaveToClipboard()) {
@@ -504,15 +502,6 @@ public class MainWindowController {
         Stage primaryStage = Scissors.getInstance().getStage();
         primaryStage.setWidth(stageWidth);
         primaryStage.setHeight(stageHeight);
-    }
-
-    /**
-     * Gets the instance of this controller.
-     *
-     * @return  Instance of this controller.
-     */
-    public static MainWindowController getInstance() {
-        return instance;
     }
 
 }

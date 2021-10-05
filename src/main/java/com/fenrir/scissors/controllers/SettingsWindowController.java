@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
  * @version v1.0.1 September 15, 2021
  */
 public class SettingsWindowController {
-    private static SettingsWindowController instance;
     public TabPane settingsPane;
 
     @FXML private CheckBox automaticSaveCheckbox;
@@ -52,7 +51,7 @@ public class SettingsWindowController {
      */
     @FXML
     private void initialize() {
-        instance = this;
+        ControllerMediatorImpl.getInstance().registerSettingsWindowController(this);
 
         automaticSaveCheckbox.setSelected(properties.isSaveToDefault());
         automaticCopyCheckbox.setSelected(properties.isSaveToClipboard());
@@ -189,7 +188,7 @@ public class SettingsWindowController {
         button.getStyleClass().add("favorite-delete");
         button.setOnMouseClicked(e -> {
             removeFavorite(item.getId());
-            MainWindowController.getInstance().refreshFavorites();
+            ControllerMediatorImpl.getInstance().receiveFavoriteList();
         });
 
         Label nameLabel = new Label(favorite.name());
@@ -223,14 +222,5 @@ public class SettingsWindowController {
         properties.write();
 
         favoriteListView.setItems(favoritesViewItems);
-    }
-
-    /**
-     * Gets the instance of this controller.
-     *
-     * @return  Instance of this controller.
-     */
-    public static SettingsWindowController getInstance() {
-        return instance;
     }
 }
