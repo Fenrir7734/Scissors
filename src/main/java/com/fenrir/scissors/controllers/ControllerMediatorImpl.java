@@ -37,8 +37,8 @@ public class ControllerMediatorImpl implements ControllerMediator {
 
     @Override
     public void receiveFavoriteList() {
-        settingsWindowController.refreshFavorite();
-        mainWindowController.refreshFavorites();
+        settingsWindowController.receiveFavorites();
+        mainWindowController.receiveFavorites();
     }
 
     private ControllerMediatorImpl() {}

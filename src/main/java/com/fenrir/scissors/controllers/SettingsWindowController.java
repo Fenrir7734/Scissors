@@ -136,26 +136,17 @@ public class SettingsWindowController {
      *
      * @see com.fenrir.scissors.model.Properties.Favorite
      */
-    public void refreshFavorite() {
+    public void receiveFavorites() {
+        favoritesViewItems.clear();
+        favoriteListView.getItems().clear();
+
+        populateFavorites();
+    }
+
+    private void populateFavorites() {
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();
-        List<String> favoriteItemsIDs = favoritesViewItems.stream()
-                .map(Node::getId)
-                .collect(Collectors.toList());
-
         for(Properties.Favorite favorite: favoriteList) {
-            if(!favoriteItemsIDs.contains(favorite.name())) {
-                addFavorite(favorite);
-            }
-        }
-
-        List<String> favoriteNamesList = favoriteList.stream()
-                .map(Properties.Favorite::name)
-                .collect(Collectors.toList());
-
-        for(String id: favoriteItemsIDs) {
-            if(!favoriteNamesList.contains(id)) {
-                removeFavorite(id);
-            }
+            addFavorite(favorite);
         }
     }
 

@@ -391,6 +391,29 @@ public class MainWindowController {
     }
 
     /**
+     * Shows notification informing that the screenshot was successfully uploaded to Imgur.
+     */
+    private void showUploadNotification() {
+        Notifications.create()
+                .title("Scissors")
+                .text("URL copied to clipboard")
+                .darkStyle()
+                .show();
+    }
+
+    /**
+     * Control that displayed Favorite items placed in MenuButton are the same as these stored in properties file.
+     *
+     * @see com.fenrir.scissors.model.Properties.Favorite
+     */
+    public void receiveFavorites() {
+        favoriteItems.clear();
+        saveAsMenuButton.getItems().clear();
+
+        populateFavorites();
+    }
+
+    /**
      * Creates MenuItems based on favorite list and add them to MenuButton for quick access to favorite saving
      * locations.
      *
@@ -408,55 +431,6 @@ public class MainWindowController {
             favoriteItems.add(item);
             saveAsMenuButton.getItems().add(item);
         }
-    }
-
-    /**
-     * Shows notification informing that the screenshot was successfully uploaded to Imgur.
-     */
-    private void showUploadNotification() {
-        Notifications.create()
-                .title("Scissors")
-                .text("URL copied to clipboard")
-                .darkStyle()
-                .show();
-    }
-
-    /**
-     * Control that displayed Favorite items placed in MenuButton are the same as these stored in properties file.
-     *
-     * @see com.fenrir.scissors.model.Properties.Favorite
-     */
-    public void refreshFavorites() {
-        List<Properties.Favorite> favoriteList = properties.getFavoriteList();
-        List<String> favoriteNameList = favoriteList.stream()
-                .map(Properties.Favorite::name)
-                .collect(Collectors.toList());
-
-        List<MenuItem> toRemove = new ArrayList<>();
-        for(MenuItem item: favoriteItems) {
-            if(!favoriteNameList.contains(item.getId())) {
-                toRemove.add(item);
-            }
-        }
-        favoriteItems.removeAll(toRemove);
-        saveAsMenuButton.getItems().removeAll(toRemove);
-
-        List<String> itemsIDs = favoriteItems.stream()
-                .map(MenuItem::getId)
-                .collect(Collectors.toList());
-
-        List<MenuItem> toAdd = new ArrayList<>();
-        for(Properties.Favorite favorite: favoriteList) {
-            if(!itemsIDs.contains(favorite.name())) {
-                MenuItem item = new MenuItem();
-                item.setText(favorite.name());
-                item.setId(favorite.name());
-                item.setOnAction(e -> saveToFavorite(favorite.path()));
-                toAdd.add(item);
-            }
-        }
-        favoriteItems.addAll(toAdd);
-        saveAsMenuButton.getItems().addAll(toAdd);
     }
 
     /**
