@@ -21,6 +21,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -51,6 +52,7 @@ import java.util.stream.Collectors;
  */
 public class MainWindowController {
     private final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
+    private final Properties properties = Properties.getInstance();
 
     @FXML private Button copyButton;
     @FXML private Button saveButton;
@@ -62,11 +64,8 @@ public class MainWindowController {
     @FXML private StackPane canvasContainer;
 
     private List<MenuItem> favoriteItems;
-
     private Tool currentTool;
     private boolean isToolbar;
-
-    private final Properties properties = Properties.getInstance();
     private Screenshot screenshot;
 
     /**
@@ -89,11 +88,9 @@ public class MainWindowController {
                 ScreenshotSaver.copyToClipBoard(screenshot.getImage());
             }
         });
-
         screenNameField.textProperty().addListener(((observable, oldValue, newValue) -> screenshot.setName(newValue)));
 
         currentTool = new PencilTool(screenshotCanvas, canvasContainer);
-
     }
 
     /**
@@ -242,9 +239,7 @@ public class MainWindowController {
      */
     @FXML
     private void pencilTool() {
-        currentTool.disableTool();
-        currentTool = new PencilTool(screenshotCanvas, canvasContainer);
-        currentTool.enableTool();
+        changeTool(new PencilTool(screenshotCanvas, canvasContainer));
     }
 
     /**
@@ -254,9 +249,7 @@ public class MainWindowController {
      */
     @FXML
     private void markerTool() {
-        currentTool.disableTool();
-        currentTool = new MarkerTool(screenshotCanvas, canvasContainer);
-        currentTool.enableTool();
+        changeTool(new MarkerTool(screenshotCanvas, canvasContainer));
     }
 
     /**
@@ -266,9 +259,7 @@ public class MainWindowController {
      */
     @FXML
     private void eraserTool() {
-        currentTool.disableTool();
-        currentTool = new EraserTool(screenshotCanvas, canvasContainer);
-        currentTool.enableTool();
+        changeTool(new EraserTool(screenshotCanvas, canvasContainer));
     }
 
     /**
@@ -278,9 +269,7 @@ public class MainWindowController {
      */
     @FXML
     private void lineTool() {
-        currentTool.disableTool();
-        currentTool = new LineTool(screenshotCanvas, canvasContainer);
-        currentTool.enableTool();
+        changeTool(new LineTool(screenshotCanvas, canvasContainer));
     }
 
     /**
@@ -290,9 +279,7 @@ public class MainWindowController {
      */
     @FXML
     private void rectangleTool() {
-        currentTool.disableTool();
-        currentTool = new RectangleTool(screenshotCanvas, canvasContainer);
-        currentTool.enableTool();
+        changeTool(new RectangleTool(screenshotCanvas, canvasContainer));
     }
 
     /**
@@ -302,9 +289,7 @@ public class MainWindowController {
      */
     @FXML
     private void ellipseTool() {
-        currentTool.disableTool();
-        currentTool = new OvalTool(screenshotCanvas, canvasContainer);
-        currentTool.enableTool();
+        changeTool(new OvalTool(screenshotCanvas, canvasContainer));
     }
 
     /**
@@ -314,8 +299,12 @@ public class MainWindowController {
      */
     @FXML
     private void arrowTool() {
+        changeTool(new ArrowTool(screenshotCanvas, canvasContainer));
+    }
+
+    private void changeTool(Tool tool) {
         currentTool.disableTool();
-        currentTool = new ArrowTool(screenshotCanvas, canvasContainer);
+        currentTool = tool;
         currentTool.enableTool();
     }
 
@@ -330,21 +319,23 @@ public class MainWindowController {
     public void receiveScreenshot(Screenshot screenshot) {
         this.screenshot = screenshot;
 
+        setComponentsDimensions();
+        drawScreenshot();
+
+        screenNameField.setText(screenshot.getName());
+        Scissors.getInstance().getStage().setIconified(false);
+
+        if(!isToolbar) {
+            show();
+            enableSavingButtons();
+        }
+
         if(properties.isSaveToClipboard()) {
             copyToClipboard();
         }
 
         if(properties.isSaveToDefault()) {
             saveToDefault();
-        }
-
-        screenNameField.setText(screenshot.getName());
-        drawScreenshot();
-        Scissors.getInstance().getStage().setIconified(false);
-
-        if(!isToolbar) {
-            show();
-            enableSavingButtons();
         }
     }
 
@@ -424,58 +415,89 @@ public class MainWindowController {
         List<Properties.Favorite> favoriteList = properties.getFavoriteList();
 
         for (Properties.Favorite favorite: favoriteList) {
-            MenuItem item = new MenuItem();
-            item.setText(favorite.name());
-            item.setId(favorite.name());
-            item.setOnAction(e -> saveToFavorite(favorite.path()));
+            MenuItem item = createFavoriteItem(favorite);
             favoriteItems.add(item);
             saveAsMenuButton.getItems().add(item);
         }
     }
 
-    /**
-     * Draw screenshot on canvas. Stage is resized accordingly to canvas size but can't be greater than screen size and
-     * lower than minimum size.
-     *
-     * @see Scissors#CONTROL_BUTTONS_BAR_HEIGHT
-     * @see Scissors#MIN_WIDTH
-     * @see Scissors#TOOLBAR_HEIGHT
-     * @see Scissors#MIN_CANVAS_HEIGHT
-     */
-    private void drawScreenshot() {
-        Rectangle2D stageScreenBounds = new ScreenDetector()
+    private MenuItem createFavoriteItem(Properties.Favorite favorite) {
+        MenuItem item = new MenuItem();
+        item.setText(favorite.name());
+        item.setId(favorite.name());
+        item.setOnAction(e -> saveToFavorite(favorite.path()));
+        return item;
+    }
+
+    private void setComponentsDimensions() {
+        Rectangle2D currentScreenBounds = getCurrentScreenBounds();
+        setStageDimensions(currentScreenBounds);
+        setScreenshotContainerDimensions(currentScreenBounds);
+        setCanvasDimensions();
+    }
+
+    private Rectangle2D getCurrentScreenBounds() {
+        return new ScreenDetector()
                 .detectStageScreens(Scissors.getInstance().getStage())
                 .get(0)
                 .getVisualBounds();
+    }
 
-        double maxWidth = stageScreenBounds.getWidth();
-        double maxHeight = stageScreenBounds.getHeight();
+    private void setScreenshotContainerDimensions(Rectangle2D bounds) {
+        double width = bounds.getWidth();
+        double height = bounds.getHeight();
 
-        screenshotContainer.setPrefViewportWidth(maxWidth);
-        screenshotContainer.setPrefViewportHeight(maxHeight);
+        screenshotContainer.setPrefViewportWidth(width);
+        screenshotContainer.setPrefViewportHeight(height);
+    }
 
+    private void setCanvasDimensions() {
+        double width = screenshot.getImage().getWidth();
+        double height = screenshot.getImage().getHeight();
+
+        screenshotCanvas.setWidth(width);
+        screenshotCanvas.setHeight(height);
+    }
+
+    private void setStageDimensions(Rectangle2D bounds) {
+        double width = calculateStageWidth(bounds);
+        double height = calculateStageHeight(bounds);
+
+        Stage stage = Scissors.getInstance().getStage();
+        stage.setWidth(width);
+        stage.setHeight(height);
+    }
+
+    private double calculateStageWidth(Rectangle2D bounds) {
+        double maxWidth = bounds.getWidth();
         double screenshotWidth = screenshot.getImage().getWidth();
-        double screenshotHeight = screenshot.getImage().getHeight();
-
-        screenshotCanvas.setWidth(screenshotWidth);
-        screenshotCanvas.setHeight(screenshotHeight);
-        screenshotCanvas.getGraphicsContext2D()
-                .drawImage(screenshot.getImage(), 0, 0, screenshotWidth, screenshotHeight);
-
         double stageWidth = Math.max(Scissors.MIN_WIDTH, screenshotWidth);
-        double stageHeight = Scissors.CONTROL_BUTTONS_BAR_HEIGHT + Scissors.TOOLBAR_HEIGHT + Math.max(screenshotHeight, Scissors.MIN_CANVAS_HEIGHT);
 
-        if (stageWidth > maxWidth) {
+        if(stageWidth > maxWidth) {
             stageWidth = maxWidth;
         }
+
+        return stageWidth;
+    }
+
+    private double calculateStageHeight(Rectangle2D bounds) {
+        double maxHeight = bounds.getHeight();
+        double screenshotHeight = screenshot.getImage().getHeight();
+        double stageHeight = Scissors.CONTROL_BUTTONS_BAR_HEIGHT + Scissors.TOOLBAR_HEIGHT +
+                Math.max(screenshotHeight, Scissors.MIN_CANVAS_HEIGHT);
 
         if (stageHeight > maxHeight) {
             stageHeight = maxHeight;
         }
 
-        Stage primaryStage = Scissors.getInstance().getStage();
-        primaryStage.setWidth(stageWidth);
-        primaryStage.setHeight(stageHeight);
+        return stageHeight;
     }
 
+    private void drawScreenshot() {
+        double width = screenshot.getImage().getWidth();
+        double height = screenshot.getImage().getHeight();
+
+        GraphicsContext gc = screenshotCanvas.getGraphicsContext2D();
+        gc.drawImage(screenshot.getImage(), 0, 0, width, height);
+    }
 }
