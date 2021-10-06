@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
  * @version v1.0.1 September 15, 2021
  */
 public class SettingsWindowController {
-    public TabPane settingsPane;
-
     @FXML private CheckBox automaticSaveCheckbox;
     @FXML private CheckBox automaticCopyCheckbox;
     @FXML private TextField pathTextField;
@@ -41,8 +39,8 @@ public class SettingsWindowController {
     @FXML private Slider opacitySlider;
     @FXML private ListView<HBox> favoriteListView;
 
+    public TabPane settingsPane;
     private ObservableList<HBox> favoritesViewItems;
-
     private final Properties properties = Properties.getInstance();
     private int opacityValue;
 

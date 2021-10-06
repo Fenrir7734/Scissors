@@ -23,15 +23,15 @@ public class Properties {
     public final static int BORDER_WIDTH = 2;
     public static final String DEFAULT_SCREENSHOT_DIRECTORY_PATH =
             Path.of(System.getProperty("user.dir")).resolve("screenshots").toString();
+
     private static Properties instance = null;
 
     private final JSONObject propertiesFileContent;
-
     private boolean saveToDefault;
     private boolean saveToClipboard;
     private Path defaultPath;
     private int opacity;
-    private final List<Favorite> favoriteList;
+    private List<Favorite> favoriteList;
     private final boolean isWindows;
 
     /**
@@ -49,22 +49,11 @@ public class Properties {
     private Properties() {
         propertiesFileContent = PropertiesUtils.readProperties();
 
+        readFavorite();
         saveToDefault = propertiesFileContent.getBoolean("save-to-default");
         saveToClipboard = propertiesFileContent.getBoolean("save-to-clipboard");
         defaultPath = Path.of(propertiesFileContent.getString("default-path"));
         opacity = propertiesFileContent.getInt("opacity");
-
-        JSONArray array = propertiesFileContent.getJSONArray("favorite");
-        favoriteList = new ArrayList<>();
-
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject favorite = array.getJSONObject(i);
-            favoriteList.add(new Favorite(
-                    favorite.getString("name"),
-                    Path.of(favorite.getString("path"))
-            ));
-        }
-
         isWindows = determineSystem();
     }
 
@@ -83,6 +72,24 @@ public class Properties {
     private boolean determineSystem() {
         String osName = System.getProperty("os.name");
         return osName.startsWith("Windows");
+    }
+
+    private void readFavorite() {
+        JSONArray array = propertiesFileContent.getJSONArray("favorite");
+        favoriteList = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            Favorite favorite = getFavoriteFrom(object);
+            favoriteList.add(favorite);
+        }
+    }
+
+    private Favorite getFavoriteFrom(JSONObject object) {
+        return new Favorite(
+                object.getString("name"),
+                Path.of(object.getString("path"))
+        );
     }
 
     /**
@@ -178,10 +185,6 @@ public class Properties {
         favoriteList.add(new Favorite(name, Path.of(path)));
     }
 
-    public boolean isWindows() {
-        return isWindows;
-    }
-
     /**
      * Removes instance of {@link Favorite Favorite} class from list of favorite save locations.
      *
@@ -193,6 +196,10 @@ public class Properties {
                 .findFirst()
                 .get();
         favoriteList.remove(toDelete);
+    }
+
+    public boolean isWindows() {
+        return isWindows;
     }
 
     /**

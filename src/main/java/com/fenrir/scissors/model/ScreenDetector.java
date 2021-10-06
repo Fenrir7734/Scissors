@@ -47,11 +47,8 @@ public class ScreenDetector {
     private Screen detectCurrentScreen() {
         Point p = MouseInfo.getPointerInfo().getLocation();
         for (Screen screen: screens) {
-            if(screen.getBounds().getMinX() <= p.x
-                    && screen.getBounds().getMaxX() > p.x
-                    && screen.getBounds().getMinY() <= p.y
-                    && screen.getBounds().getMaxY() > p.y
-            ) {
+            Rectangle2D screenBounds = screen.getBounds();
+            if(isPointWithinBounds(p, screenBounds)) {
                 return screen;
             }
         }
@@ -122,5 +119,12 @@ public class ScreenDetector {
      */
     public int getCurrentScreenHeight() {
         return (int) currentScreen.getBounds().getHeight();
+    }
+
+    private boolean isPointWithinBounds(Point point, Rectangle2D bounds) {
+        return bounds.getMinX() <= point.x
+                && bounds.getMaxX() > point.x
+                && bounds.getMinY() <= point.y
+                && bounds.getMaxY() > point.y;
     }
 }

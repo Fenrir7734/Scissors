@@ -64,9 +64,7 @@ public class Screenshot {
      * @return  New instance of this class holding cropped image.
      */
     public Screenshot cropScreenshot(Area area) {
-        if((area.getWidth() < image.getWidth() || area.getHeight() < image.getHeight())
-                && area.getWidth() > 0 && area.getHeight() > 0) {
-
+        if(isAreaDimensionsCorrect(area)) {
             PixelReader reader = image.getPixelReader();
             WritableImage image = new WritableImage(
                     reader,
@@ -79,6 +77,12 @@ public class Screenshot {
             return new Screenshot(image);
         }
         return this;
+    }
+
+    private boolean isAreaDimensionsCorrect(Area area) {
+        return (area.getWidth() < image.getWidth() || area.getHeight() < image.getHeight())
+                && area.getWidth() > 0
+                && area.getHeight() > 0;
     }
 
     /**

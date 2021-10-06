@@ -64,7 +64,15 @@ public class FavoriteInputWindowController {
             alert.showAndWait();
         }
     }
-    
+
+    /**
+     * Handles the button action to close Favorite Input Window GUI.
+     */
+    @FXML
+    private void close() {
+        pathTextField.getScene().getWindow().hide();
+    }
+
     private void addToFavorite(String name, String path) throws IllegalArgumentException {
         if(isFieldEmpty(name, path)) {
             throw new IllegalArgumentException("All fields must be completed!");
@@ -92,13 +100,5 @@ public class FavoriteInputWindowController {
                 .stream()
                 .map(Properties.Favorite::name)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Handles the button action to close Favorite Input Window GUI.
-     */
-    @FXML
-    private void close() {
-        pathTextField.getScene().getWindow().hide();
     }
 }
