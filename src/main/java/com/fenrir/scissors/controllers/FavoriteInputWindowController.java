@@ -50,33 +50,48 @@ public class FavoriteInputWindowController {
      */
     @FXML
     private void add() {
-        String name = nameTextField.getText();
-        String path = pathTextField.getText();
+        try {
+            String name = nameTextField.getText();
+            String path = pathTextField.getText();
+            addToFavorite(name, path);
+            ControllerMediatorImpl.getInstance().receiveFavoriteList();
 
-        if (name != null && !name.isBlank() && path != null && !path.isBlank()) {
-            name = name.trim();
-            List<String> favoritesNames = properties.getFavoriteList()
-                    .stream()
-                    .map(Properties.Favorite::name)
-                    .collect(Collectors.toList());
-
-            if (!favoritesNames.contains(name)) {
-                properties.addToFavorite(name, path);
-                properties.write();
-
-                ControllerMediatorImpl.getInstance().receiveFavoriteList();
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Path added to favorites");
-                alert.showAndWait();
-                close();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Name must be unique!");
-                alert.showAndWait();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "All fields must be completed!");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Path added to favorites");
+            alert.showAndWait();
+            close();
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }
+    }
+    
+    private void addToFavorite(String name, String path) throws IllegalArgumentException {
+        if(isFieldEmpty(name, path)) {
+            throw new IllegalArgumentException("All fields must be completed!");
+        }
+        name = name.trim();
+
+        if(isDuplicate(name)) {
+            throw new IllegalArgumentException("Name must be unique!");
+        }
+        properties.addToFavorite(name, path);
+        properties.write();
+    }
+
+    private boolean isFieldEmpty(String name, String path) {
+        return name == null || name.isBlank() || path == null || path.isBlank();
+    }
+
+    private boolean isDuplicate(String name) {
+        List<String> favoriteNames = getListOfFavoriteNames();
+        return favoriteNames.contains(name);
+    }
+
+    private List<String> getListOfFavoriteNames() {
+        return properties.getFavoriteList()
+                .stream()
+                .map(Properties.Favorite::name)
+                .collect(Collectors.toList());
     }
 
     /**
