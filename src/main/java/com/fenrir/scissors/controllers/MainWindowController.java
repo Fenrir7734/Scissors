@@ -1,7 +1,7 @@
 package com.fenrir.scissors.controllers;
 
 import com.fenrir.scissors.Scissors;
-import com.fenrir.scissors.model.ImgurUploader;
+import com.fenrir.scissors.model.uploader.ImgurUploader;
 import com.fenrir.scissors.model.Properties;
 import com.fenrir.scissors.model.ScreenshotSaver;
 import com.fenrir.scissors.model.ScreenDetector;
@@ -14,6 +14,7 @@ import com.fenrir.scissors.model.draw.shapetools.OvalTool;
 import com.fenrir.scissors.model.draw.shapetools.LineTool;
 import com.fenrir.scissors.model.draw.shapetools.RectangleTool;
 import com.fenrir.scissors.model.screenshot.Screenshot;
+import com.fenrir.scissors.model.uploader.WebException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +43,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * This class controls main window of the program.
@@ -205,10 +205,10 @@ public class MainWindowController {
                     ScreenshotSaver.copyToClipBoard(url);
                     showUploadNotification();
                 });
-            } catch (IOException e) {
+            } catch (IOException | WebException e) {
                 logger.error(e.getMessage());
                 Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Uploading to imgur failed.");
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Uploading to imgur failed.\n" + e.getMessage());
                     alert.showAndWait();
                 });
             }

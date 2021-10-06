@@ -1,4 +1,21 @@
-package com.fenrir.scissors.model;
+/**
+ * Copyright 2014 DV8FromTheWorld (Austin Keener)
+ * Modifications copyright 2021 Fenrir7734
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.fenrir.scissors.model.uploader;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -21,18 +38,18 @@ public class ImgurUploader {
     private static final String UPLOAD_URL = "https://api.imgur.com/3/image";
     private static final String CLIENT_ID = "f56ba7718f727fe";
 
-    static public String upload(Image image) throws IOException {
+    static public String upload(Image image) throws IOException, WebException {
         HttpURLConnection connection = getConnection();
-        writeToConnection(connection, toBase64(image));
-        return getUploadUrl(connection);
+        write(connection, toBase64(image));
+        return getUrlFrom(connection);
     }
 
     static private String toBase64(Image image) throws IOException {
         try {
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            byte[] bytes = baos.toByteArray();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
             return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
             LOGGER.error("Image to Base64 String conversion error: {}", e.getMessage());
@@ -40,7 +57,7 @@ public class ImgurUploader {
         }
     }
 
-    static private void writeToConnection(HttpURLConnection connection, String message) throws IOException {
+    static private void write(HttpURLConnection connection, String message) throws IOException {
         try {
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
             writer.write(message);
@@ -52,16 +69,16 @@ public class ImgurUploader {
         }
     }
 
-    static private String getUploadUrl(HttpURLConnection connection) throws IOException {
+    static private String getUrlFrom(HttpURLConnection connection) throws IOException, WebException {
         try {
             int status = connection.getResponseCode();
-            if(status == HttpURLConnection.HTTP_OK) {
+            if(status == StatusCode.OK.getCode()) {
                 BufferedReader reader;
                 reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String response = reader.lines().collect(Collectors.joining());
                 return new JSONObject(response).getJSONObject("data").getString("link");
             } else {
-                throw new IOException(connection.getResponseMessage());
+                throw new WebException(StatusCode.getResponseCode(status));
             }
         } catch (IOException e) {
             LOGGER.error("Reading connection response error: {}", e.getMessage());
