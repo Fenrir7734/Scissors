@@ -119,7 +119,7 @@ public class MainWindowController {
             // on screenshot.
             new Thread(() -> {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(650);
                     Platform.runLater(captureWindowController::startCapturing);
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());

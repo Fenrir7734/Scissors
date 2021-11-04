@@ -175,6 +175,8 @@ public class ScreenCaptureWindowController {
         if(!properties.isWindows()) {
             captureWindow.setFullScreen(false);
             captureWindow.setFullScreen(true);
+        } else {
+            captureWindow.setFullScreen(true);
         }
     }
 
