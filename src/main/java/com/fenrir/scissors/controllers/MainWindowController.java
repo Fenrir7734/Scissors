@@ -205,7 +205,7 @@ public class MainWindowController {
                     ScreenshotSaver.copyToClipBoard(url);
                     showUploadNotification();
                 });
-            } catch (IOException | WebException e) {
+            } catch (IOException | InterruptedException | WebException e) {
                 logger.error(e.getMessage());
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Uploading to imgur failed.\n" + e.getMessage());

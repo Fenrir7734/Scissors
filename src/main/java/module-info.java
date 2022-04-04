@@ -8,6 +8,7 @@ module com.fenrir.scissors {
     requires org.slf4j;
     requires org.json;
     requires java.desktop;
+    requires java.net.http;
 
     opens com.fenrir.scissors.controllers to javafx.fxml;
     exports com.fenrir.scissors;
