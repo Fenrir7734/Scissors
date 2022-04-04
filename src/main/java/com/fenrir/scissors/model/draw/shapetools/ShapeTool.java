@@ -14,7 +14,7 @@ import javafx.util.Pair;
  * @version v1.0.0 September 18, 2021
  */
 public abstract class ShapeTool extends Tool {
-    protected Canvas layer = new Canvas();
+    protected Canvas layer;
     protected Pair<Double, Double> startPoint;
 
     public ShapeTool(Canvas canvas, StackPane canvasContainer) {
