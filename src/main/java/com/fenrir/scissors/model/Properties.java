@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -246,7 +247,8 @@ public class Properties {
      */
     private static class PropertiesUtils {
         private final static Logger logger = LoggerFactory.getLogger(Properties.class);
-        private final static String PATH = "src/main/resources/properties.json";
+        private final static String PROPERTIES_FILE_PATH =
+                Path.of(System.getProperty("user.dir")).resolve("properties.json").toString();
 
         /**
          * Reads JSON file that stores program properties and returns JSONObject representing content of that file. If
@@ -257,11 +259,16 @@ public class Properties {
          */
         public static JSONObject readProperties() {
             try {
-                String content = new String(Files.readAllBytes(Paths.get(PATH)));
+                String content = new String(Files.readAllBytes(Paths.get(PROPERTIES_FILE_PATH)));
 
                 return new JSONObject(content);
             } catch (IOException | JSONException e) {
-                logger.error("An error occurred when reading {} file: {}", PATH, e.getMessage());
+                if (e instanceof NoSuchFileException) {
+                    logger.warn("Properties file not found.");
+                } else {
+                    logger.error("An error occurred when reading {} file: {}", PROPERTIES_FILE_PATH, e.getMessage());
+                }
+                logger.warn("Falling back to default properties.");
 
                 JSONObject defaultProperties = getDefaultProperties();
                 writeProperties(defaultProperties);
@@ -276,10 +283,10 @@ public class Properties {
          * @param object    The object whose content will be written to the file.
          */
         public static void writeProperties(JSONObject object) {
-            try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(PATH))) {
+            try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(PROPERTIES_FILE_PATH))) {
                 object.write(writer, 4, 0);
             } catch (IOException | JSONException e) {
-                logger.error("An error occurred when writing to {} file: {}", PATH, e.getMessage());
+                logger.error("An error occurred when writing to {} file: {}", PROPERTIES_FILE_PATH, e.getMessage());
             }
         }
     }
