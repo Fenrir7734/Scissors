@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Locale;
 
 /**
  * Helper class to save screenshots on local machine.
@@ -51,7 +52,8 @@ public class ScreenshotSaver {
 
 
     /**
-     * Saves image as a .png file format to the given File.
+     * Saves image as a .png file format to the given File. If file parent directory does not exist it will try to
+     * create it. On Windows it will append file extension to file name if it is not specified.
      *
      * @param image         Image to be saved.
      * @param file          File to be written to.
@@ -60,6 +62,8 @@ public class ScreenshotSaver {
      */
     public static void saveTo(Image image, File file) throws IOException  {
         try {
+            createParentDirectoryIfNotExists(file);
+            file = appendFileExtensionIfOnWindows(file);
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
         } catch (IOException e) {
             LOGGER.error("Saving file locally error: {}", e.getMessage());
@@ -67,9 +71,29 @@ public class ScreenshotSaver {
         }
     }
 
+    private static void createParentDirectoryIfNotExists(File file) {
+        File directory = file.getParentFile();
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+    }
+
+    private static File appendFileExtensionIfOnWindows(File file) {
+        if (Properties.getInstance().isWindows()) {
+            String filename = file.getName()
+                    .trim()
+                    .toLowerCase(Locale.ROOT);
+            filename = filename.endsWith(".png") ? file.getName() : file.getName() + ".png";
+            Path parentDirPath = file.getParentFile().toPath();
+            return parentDirPath.resolve(filename).toFile();
+        }
+        return file;
+    }
+
     /**
      * Saves image as a .png file format to the given directory. Creates a new File in the given directory and writes to
-     * it.
+     * it. If file parent directory does not exist it will try to create it. On Windows it will append file extension to
+     * file name if it is not specified.
      *
      * @param image         Image to be saved.
      * @param dirPath       Directory where image will be saved.

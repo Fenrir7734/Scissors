@@ -38,7 +38,7 @@ public class Screenshot {
      */
     public Screenshot(Image image) {
         this.image = image;
-        this.name = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
+        this.name = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
     }
 
     /**
